@@ -1,0 +1,7 @@
+# Tortik
+1) data import
+2) calculate median value
+3) resonance localization
+4) resonance fit
+5) data export
+6) GUI
