@@ -2,10 +2,11 @@
 #include <string>
 #include <stdlib.h>
 #include <math.h>
+#include <vector>
 
 using namespace std;
 
-inline static double sqr(double x) 
+inline static double sqr(double x)
 {
     return x*x;
 }
@@ -16,7 +17,7 @@ inline static double sqr(double x)
 // *m  = output slope
 const int N = 1000000;
 
-int linreg(int n, double* x, double* y, double* m, double* b)
+int linreg(int n, vector <double> x, vector <double> y, double* m, double* b)
 {
     double   sumx = 0.0;                      /* sum of x     */
     double   sumx2 = 0.0;                     /* sum of x**2  */
@@ -24,32 +25,33 @@ int linreg(int n, double* x, double* y, double* m, double* b)
     double   sumy = 0.0;                      /* sum of y     */
     double   sumy2 = 0.0;                     /* sum of y**2  */
 
-    for (int i=0;i<n;i++){ 
-        sumx  += x[i];       
-        sumx2 += sqr(x[i]);  
+    for (int i=0;i<n;i++)
+    {
+        sumx  += x[i];
+        sumx2 += sqr(x[i]);
         sumxy += x[i] * y[i];
-        sumy  += y[i];      
-        sumy2 += sqr(y[i]); 
-    } 
+        sumy  += y[i];
+        sumy2 += sqr(y[i]);
+    }
 
     double denom = (n * sumx2 - sqr(sumx));
     if (!denom)
         return 1;
     *m = (n * sumxy  -  sumx * sumy) / denom;
     *b = (sumy * sumx2  -  sumx * sumxy) / denom;
-    return 0; 
+    return 0;
 }
 
 int main()
 {
     int n = N;
-    double x[N];
-    double y[N];
+    vector <double> x(N);
+    vector <double> y(N);
     int i=0;
     for (i=0; i<N; i++)
         x[i]=y[i]=i;
     double m,b;
     linreg(n,x,y,&m,&b);
-    printf("m=%g b=%g\n",m,b);
+    cout << "m=" << m << " b=" << b << endl;
     return 0;
 }
