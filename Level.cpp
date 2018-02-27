@@ -7,10 +7,10 @@ using namespace std;
 
 // n = number of data points
 // x,y  = arrays of data
-// *b = output intercept
-// *m  = output slope
+// *y0 = output intercept
+// *k  = output slope
 
-void Level(vector <double> &x, vector <double> &y, double* m, double* b)
+void level(vector <double> &x, vector <double> &y, double* k, double* y0)
 {
     double   sumx = 0.0;                      /* sum of x     */
     double   sumx2 = 0.0;                     /* sum of x**2  */
@@ -27,6 +27,6 @@ void Level(vector <double> &x, vector <double> &y, double* m, double* b)
         sumy2 += y[i] * y[i];
     }
     double denom = (size * sumx2 - sumx * sumx);
-    *m = (size * sumxy  -  sumx * sumy) / denom;
-    *b = (sumy * sumx2  -  sumx * sumxy) / denom;
+    *k = (size * sumxy  -  sumx * sumy) / denom;
+    *y0 = (sumy * sumx2  -  sumx * sumxy) / denom;
 }

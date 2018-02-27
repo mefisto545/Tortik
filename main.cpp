@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
 
     FileData file("WH.dat","Fgen","Theta"); //Example of creating file class
     file.readRows(); //Reading two rows from file
+    double k, y0;
+    stack <struct AB> st;
+    level(file.freqData, file.phaseData, &k, &y0);
+    trigger(file.freqData, file.phaseData, k, y0, file.trigg, st);
     file.writeFreqAndTheta(); //Write Readed data to file FreqAndTheta.txt
 
     string names[] = {"Her", "Lol"}; //Names of the rows

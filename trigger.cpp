@@ -1,26 +1,18 @@
-#include <iostream>
-#include <stack>
-#include <vector>
+#include "filedata.h"
 
 using namespace std;
 
-inline static double median(double f,double k, double y0)
+inline double median(double f,double k, double y0)
 {
     return f*k + y0;
 }
 
-struct AB
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, stack <struct AB> Stack)
 {
-    int a;
-    int b;
-};
-
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, stack <struct AB> Stack, double trigg)
-{
-    int i=0;
+    int i=1;
     struct AB ab;
     double size = x.size();
-    while(i!=size)
+    while(i!=size-1)
     {
         if(y[i] > median(x[i], k, y0) + trigg) //check for antiresonance
         {
