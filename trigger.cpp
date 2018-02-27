@@ -1,5 +1,5 @@
 #include "filedata.h"
-
+#include <iostream>
 using namespace std;
 
 inline double median(double f,double k, double y0)
@@ -7,12 +7,12 @@ inline double median(double f,double k, double y0)
     return f*k + y0;
 }
 
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, stack <struct AB> Stack)
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, stack <struct AB> *Stack)
 {
     int i=1;
     struct AB ab;
     double size = x.size();
-    while(i!=size-1)
+    while(i < size-1)
     {
         if(y[i] > median(x[i], k, y0) + trigg) //check for antiresonance
         {
@@ -37,7 +37,7 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
                     ab.a = i - 1;
                     ab.b = i + 1;
                 }
-        Stack.push(ab);
+        Stack->push(ab);
         }
 
         if(y[i] < median(x[i], k, y0) - trigg) //check for resonance
@@ -63,7 +63,7 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
                     ab.a = i - 1;
                     ab.b = i + 1;
                 }
-        Stack.push(ab);
+        Stack->push(ab);
         }
         i++;
     }

@@ -37,6 +37,6 @@ struct AB
     int b;
 };
 void level(vector <double> &x, vector <double> &y, double* k, double* y0);
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, stack <struct AB> Stack);
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, stack <struct AB> *Stack);
 
 #endif // FILEDATA_H

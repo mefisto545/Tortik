@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "filedata.h"
 #include <QApplication>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -12,10 +13,10 @@ int main(int argc, char *argv[])
     file.readRows(); //Reading two rows from file
     double k, y0;
     stack <struct AB> st;
+    file.trigg = 5;
     level(file.freqData, file.phaseData, &k, &y0);
-    trigger(file.freqData, file.phaseData, k, y0, file.trigg, st);
+    trigger(file.freqData, file.phaseData, k, y0, file.trigg, &st);
     file.writeFreqAndTheta(); //Write Readed data to file FreqAndTheta.txt
-
     string names[] = {"Her", "Lol"}; //Names of the rows
     vector<double> data[] = {file.freqData, file.phaseData}; //Vectors with data
     file.writeRows("1.txt", names, data, 2); //Write data rows in file and name them as strings from name[]
