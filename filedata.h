@@ -26,6 +26,7 @@ public:
     bool readRows();                                                                  // Чтение столбцов с названиями из row
     void writeRows(const string &path, const string *rowNames, const vector<double> *arrays, int size); //Запись столбцов в файл
     void writeFreqAndTheta();
+    void writeStackToFile(const string &path, stack <struct AB> &stack);
 
 private:
 };
