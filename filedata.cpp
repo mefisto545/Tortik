@@ -1,11 +1,11 @@
 #include "filedata.h"
 
-FileData::FileData(char *path, char *freqName, char *phaseName)
+FileData::FileData(const string &path, const string &freqName, const string &phaseName)
 {
     filePath = string(path);                                       // Объявление пути к файлу
     freqColName = string(freqName);                     // Инициализация названия колонки с частотами
     phaseColName = string(phaseName);               //  Инициализация названия колонки с фазой
-    phaseColNum = -1;                                                   // Инициализация начальных значений номеров колонок
+    phaseColNum = -1;                                                 // Инициализация начальных значений номеров колонок
     freqColNum = -1;                                                      // отрицательной единицей
 }
 
@@ -19,7 +19,7 @@ bool FileData::readRows()
     int numLine = 1;                                                          // Итератор для строк
 
     getline(fileStream, localLine);                               // Получение и запись первой строки с заголовками
-    ss = stringstream(localLine);                                //Подключение к нему потока
+    ss = stringstream(localLine);                                //Создание потока этой строки
 
     while (ss >> localWord)
     {
@@ -51,4 +51,44 @@ bool FileData::readRows()
         numLine++;
     }
     return 0;
+}
+
+void  FileData::writeRows(const string &path , const string *rowNames,const vector<double> *arrays, int size)
+{
+    int colIterator = 0, rowIterator = 0;
+    int vectorSize = arrays[0].size();
+    ofstream fileStream(path);
+
+    for (colIterator = 0; colIterator < size; colIterator ++)
+    {
+        fileStream << rowNames[colIterator] << "\t";
+    }
+    fileStream << "\n";
+
+    for (rowIterator = 0; rowIterator < vectorSize; rowIterator++)
+    {
+        for (colIterator = 0; colIterator < size; colIterator ++)
+        {
+            fileStream << arrays[colIterator][rowIterator] << "\t";
+        }
+        fileStream << "\n";
+    }
+    fileStream.flush();
+    fileStream.close();
+}
+
+void FileData::writeFreqAndTheta()
+{
+    if (phaseColNum < 0 || freqColNum < 0) return;
+    int size = this->freqData.size();
+    int i = 0;
+    ofstream fileStream("FrequencyAndTheta.txt");
+
+    fileStream << "Freq\t" << "Theta\n";
+
+    for (i =0; i < size; i++)
+    {
+        fileStream << freqData[i] << "\t" << phaseData[i] << "\n";
+    }
+    fileStream.close();
 }

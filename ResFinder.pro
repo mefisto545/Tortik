@@ -14,7 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    filedata.cpp
+    filedata.cpp \
+    Level.cpp \
+    trigger.cpp
 
 HEADERS  += mainwindow.h \
     filedata.h

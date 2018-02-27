@@ -15,13 +15,13 @@ struct AB
     int b;
 };
 
-int main()
+void main1()
 {
     int i=0;
     stack <struct AB> Stack;
-    double k, y0;
+    double k = 0, y0 = 0;
     struct AB ab;
-    double trigg;
+    double trigg = 0;
     vector <double> y;
     vector <double> x;
     bool END = false;

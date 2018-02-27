@@ -21,7 +21,7 @@ void Level(vector <double> &x, vector <double> &y, double* m, double* b)
     for (int i=0; i < size; i++)
     {
         sumx  += x[i];
-        sumx2 += x[i] * [i];
+        sumx2 += x[i] * x[i];
         sumxy += x[i] * y[i];
         sumy  += y[i];
         sumy2 += y[i] * y[i];
