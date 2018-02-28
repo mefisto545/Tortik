@@ -12,6 +12,7 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
     int i=1;
     struct AB ab;
     double size = x.size();
+    bool bad; //true means that this resonance/anti- is too close to another anti-/resonanse
     while(i < size-1)
     {
         if(y[i] > median(x[i], k, y0) + trigg) //check for antiresonance
@@ -19,12 +20,18 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
             if(y[i+1] > median(x[i], k, y0) + trigg) //check for non-one-point resonance
             {
                 if(y[i-1] > median(x[i], k, y0) - trigg) //check that previous point is not a resonance
+                {
                     ab.a = i - 1;
+                    bad = false;
+                }
                 else
+                {
                     ab.a = i;
+                    bad = true;
+                }
                 while((y[i+1] > median(x[i+1], k, y0) + trigg)&&(i!=size-2))//go to the end of current antiresonance
                     i++;
-                if(y[i+1] > median(x[i+1], k, y0) - trigg)//check that next point is not a resonance
+                if((y[i+1] > median(x[i+1], k, y0) - trigg)&&(bad == false))//check that next point is not a resonance
                     ab.b = i + 1;
                 else
                     ab.b = i;
@@ -45,12 +52,18 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
             if(y[i+1] < median(x[i], k, y0) - trigg) //check for non-one-point resonance
             {
                 if(y[i-1] < median(x[i], k, y0) + trigg) //check that previous point is not a antiresonance
+                {
                     ab.a = i - 1;
+                    bad = false;
+                }
                 else
+                {
                     ab.a = i;
+                    bad = true;
+                }
                 while((y[i+1] < median(x[i+1], k, y0) - trigg)&&(i!=size-2))//go to the end of current resonance
                     i++;
-                if(y[i+1] < median(x[i+1], k, y0) + trigg)//check that next point is not a antiresonance
+                if((y[i+1] < median(x[i+1], k, y0) + trigg)&&(bad == false))//check that next point is not a antiresonance
                     ab.b = i + 1;
                 else
                     ab.b = i;
