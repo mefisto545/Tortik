@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "filedata.h"
+#include "resfitter.h"
 #include <QApplication>
 #include <iostream>
 
@@ -17,6 +18,9 @@ int main(int argc, char *argv[])
     level(file.freqData, file.phaseData, &k, &y0);
     trigger(file.freqData, file.phaseData, k, y0, file.trigg, &st);
     file.writeStackToFile("StackData.txt", st);
+
+    ResFitter fitter(1e4, 1e-3, 1e-4,&file);
+    fitter.fitData(st);
 
     file.writeFreqAndTheta(); //Write Readed data to file FreqAndTheta.txt
     string names[] = {"Frequency", "Theta"}; //Names of the rows

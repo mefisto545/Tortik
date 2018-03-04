@@ -1,0 +1,165 @@
+#include "resfitter.h"
+
+ResFitter::ResFitter(double maxSteps, double minError, double step, FileData* file)
+{
+    this->maxSteps = maxSteps;
+    this->minError = minError;
+    this->file = file;
+    this->step = step;
+}
+
+double ResFitter::lorentz(double x, double y0, double yc, double xc, double w)
+{
+    return y0 + (yc - y0) * pow(w, 2.0) / (4.0 * pow(x-xc, 2.0) + pow(w, 2.0));
+}
+
+double ResFitter::lorentz(double x, double *params)
+{
+    return ResFitter::lorentz(x, params[0], params[1], params[2], params[3]);
+}
+
+double ResFitter::lorentzDy0(double x, double xc, double w)
+{
+    return 1.0 / (1.0 + pow(w, 2.0) / (4.0 * pow(x - xc,2.0)));
+}
+
+double ResFitter::lorentzDy0(double x, double *params)
+{
+    double result = ResFitter::lorentzDy0(x, params[2], params[3]);
+    return result;
+}
+
+double ResFitter::lorentzDyc(double x, double xc, double w)
+{
+    return 1.0 / (1.0 + 4.0 * pow(x - xc, 2.0) / pow(w, 2.0) );
+}
+
+double ResFitter::lorentzDyc(double x, double* params)
+{
+    return ResFitter::lorentzDyc(x, params[2], params[3]);
+}
+
+double ResFitter::lorentzDxc(double x, double y0, double yc, double xc, double w)
+{
+    return 8.0 * (yc - y0) * (x - xc) * pow(w, 2.0) / pow (4.0 * pow(x - xc, 2.0) + pow(w, 2.0), 2.0);
+}
+
+double ResFitter::lorentzDxc(double x, double *params)
+{
+    return ResFitter::lorentzDxc(x, params[0], params[1], params[2], params[3]);
+}
+
+double ResFitter::lorentzDw(double x, double y0, double yc, double xc, double w)
+{
+    return 8.0 * (yc - y0) * pow(x - xc, 2.0) * w / pow(4.0 * pow(x-xc, 2.0) + pow(w, 2.0), 2.0);
+}
+
+double ResFitter::lorentzDw(double x, double *params)
+{
+    return ResFitter::lorentzDw(x, params[0], params[1], params[2], params[3]);
+}
+
+double ResFitter::errorMSE(double *params)
+{
+    int size = freq.size();
+    int i = 0;
+    double sum = 0.0;
+    for (i = 0; i < size; i++){
+        sum += pow((theta[i] - lorentz(freq[i], params))/theta[i], 2.0);
+    }
+    return sum / (double)size;
+}
+
+void ResFitter::gradDescentStep(double *params, double step)
+{
+    double dy0 = 0, dxc = 0, dw = 0, dyc = 0;
+    int i, size = freq.size();
+    for (i = 0; i < size; i ++)
+    {
+        dy0 -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDy0(freq[i], params) / size;
+        dyc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDyc(freq[i], params) / size;
+        dxc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDxc(freq[i], params) / size;
+        dw -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDw(freq[i], params) / size;
+    }
+    double dParams[] = {step * dy0, step * dyc, step * dxc, step * dw};
+    for (int i = 0; i < 4; i ++)
+    {
+        double newParams = params[i] - dParams[i];
+        if (newParams > 0.0)
+        {
+            params[i] = newParams;
+        }
+    }
+}
+
+void ResFitter::gradDescent(double *params, double step)
+{
+    double locError = 1;
+    int steps = 1;
+    vector<double>().swap(errors);
+    errors.push_back(ResFitter::errorMSE(params));
+    while(steps < maxSteps && locError > minError)
+    {
+        gradDescentStep(params, step);
+        locError = ResFitter::errorMSE(params);
+        errors.push_back(locError);
+        steps += 1;
+    }
+}
+
+bool ResFitter::readDataFromStack(stack <struct AB> &st)
+{
+    vector<double>().swap(freq);
+    vector<double>().swap(theta);
+
+    if (!st.empty())
+    {
+        int s = st.top().a, f = st.top().b;
+        for (int i = s; i <=f;i++)
+        {
+            freq.push_back(file->freqData[i]);
+            theta.push_back(file->phaseData[i]);
+        }
+        st.pop();
+    }
+    else return false;
+    return true;
+}
+
+void ResFitter::findParams()
+{
+    double sum = 0;
+    int min = 0, i = 0, size = theta.size();
+    for (i =0; i <size; i++)
+    {
+        sum += freq[i];
+        if (theta[i] < theta[min]) min = i;
+    }
+    params[0] = (theta[0] + theta.back())/2.0; /*x_x*/
+    params[1]= theta[min];
+    params[2]= freq[min];
+    params[3]= (freq.back() - freq[0]) / 2.0;
+}
+
+void ResFitter::fitData(stack <struct AB> &stack)
+{
+    int numberOfPeak = 0;
+    while (ResFitter::readDataFromStack(stack))
+    {
+        findParams();
+        ResFitter::gradDescent(this->params, step);
+        vector<double> params;
+        params.insert( params.begin() , this->params , this->params + 4 ) ;
+        vector<double> data[] = {freq, theta};
+        string names[] = {"Freq", "Theta"};
+        string paramNames("Parameters(y0, yc, xc, width)");
+        string errorsNames("MSE:");
+        string dataString = to_string(numberOfPeak).append("Peak_data.txt");
+        string paramsString = to_string(numberOfPeak).append("Peak_params.txt");
+        string errorsString = to_string(numberOfPeak).append("Peak_errors.txt");
+        file->writeRows(dataString , names, data, 2);
+        file->writeRows(paramsString, &paramNames, &params, 1);
+        file->writeRows(errorsString, &errorsNames, &errors, 1);
+        numberOfPeak +=1;
+    }
+}

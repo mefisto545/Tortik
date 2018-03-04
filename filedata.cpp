@@ -93,7 +93,7 @@ void FileData::writeFreqAndTheta()
     fileStream.close();
 }
 
-void FileData::writeStackToFile(const string &path, stack<struct AB> &stack)
+void FileData::writeStackToFile(const string &path, stack<struct AB> stack)
 {
     ofstream fileStream(path);
     while (!stack.empty())

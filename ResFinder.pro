@@ -16,9 +16,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     filedata.cpp \
     Level.cpp \
-    trigger.cpp
+    trigger.cpp \
+    resfitter.cpp
 
 HEADERS  += mainwindow.h \
-    filedata.h
+    filedata.h \
+    resfitter.h
 
 FORMS    += mainwindow.ui
