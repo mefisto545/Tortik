@@ -98,7 +98,7 @@ void FileData::writeStackToFile(const string &path, stack<struct AB> stack)
     ofstream fileStream(path);
     while (!stack.empty())
     {
-        fileStream << stack.top().a << "\t" << stack.top().b << "\n";
+        fileStream << stack.top().a << "\t" << stack.top().b << "\t" << stack.top().snr << "\n";
         stack.pop();
     }
     fileStream.close();

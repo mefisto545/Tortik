@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     filedata.cpp \
     Level.cpp \
     trigger.cpp \
-    resfitter.cpp
+    resfitter.cpp \
+    snr.cpp
 
 HEADERS  += mainwindow.h \
     filedata.h \

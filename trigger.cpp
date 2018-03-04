@@ -7,7 +7,7 @@ inline double median(double f,double k, double y0)
     return f*k + y0;
 }
 
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, stack <struct AB> *Stack)
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct AB> *Stack)
 {
     int i=1;
     struct AB ab;
@@ -44,6 +44,7 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
                     ab.a = i - 1;
                     ab.b = i + 1;
                 }
+        ab.snr = SNR(y, ab.a, ab.b, median(x[i], k, y0), trigg, w);
         Stack->push(ab);
         }
 
@@ -76,6 +77,7 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
                     ab.a = i - 1;
                     ab.b = i + 1;
                 }
+        ab.snr = SNR(y, ab.a, ab.b, median(x[i], k, y0), trigg, w);
         Stack->push(ab);
         }
         i++;

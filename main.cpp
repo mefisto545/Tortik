@@ -15,8 +15,9 @@ int main(int argc, char *argv[])
     double k, y0;
     stack <struct AB> st;
     file.trigg = 1;
+    file.w = 50;
     level(file.freqData, file.phaseData, &k, &y0);
-    trigger(file.freqData, file.phaseData, k, y0, file.trigg, &st);
+    trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, &st);
     file.writeStackToFile("StackData.txt", st);
 
     ResFitter fitter(1e4, 1e-3, 1e-4,&file);
