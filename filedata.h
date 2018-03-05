@@ -27,20 +27,20 @@ public:
     bool readRows();                                                                  // Чтение столбцов с названиями из row
     void writeRows(const string &path, const string *rowNames, const vector<double> *arrays, int size); //Запись столбцов в файл
     void writeFreqAndTheta();
-    void writeStackToFile(const string &path, stack <struct AB> stack);
+    void writeStackToFile(const string &path, stack <struct Resonance> stack);
 
 private:
 };
 
 inline double median(double f,double k, double y0);
-struct AB
+struct Resonance
 {
     int a;
     int b;
     double snr;
 };
 void level(vector <double> &x, vector <double> &y, double* k, double* y0);
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct AB> *Stack);
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct Resonance> *Stack);
 double SNR(vector <double> &y, int a, int b, double median, double trigg, int w);
 
 #endif // FILEDATA_H

@@ -107,7 +107,7 @@ void ResFitter::gradDescent(double *params, double step)
     }
 }
 
-bool ResFitter::readDataFromStack(stack <struct AB> &st)
+bool ResFitter::readDataFromStack(stack <struct Resonance> &st)
 {
     vector<double>().swap(freq);
     vector<double>().swap(theta);
@@ -141,25 +141,22 @@ void ResFitter::findParams()
     params[3]= (freq.back() - freq[0]) / 2.0;
 }
 
-void ResFitter::fitData(stack <struct AB> &stack)
+void ResFitter::fitData(stack <struct Resonance> &stack)
 {
-    int numberOfPeak = 0;
+    ofstream ofile("FitResult.txt");
+    ofile.close();
     while (ResFitter::readDataFromStack(stack))
     {
         findParams();
         ResFitter::gradDescent(this->params, step);
         vector<double> params;
-        params.insert( params.begin() , this->params , this->params + 4 ) ;
-        vector<double> data[] = {freq, theta};
-        string names[] = {"Freq", "Theta"};
-        string paramNames("Parameters(y0, yc, xc, width)");
-        string errorsNames("MSE:");
-        string dataString = to_string(numberOfPeak).append("Peak_data.txt");
-        string paramsString = to_string(numberOfPeak).append("Peak_params.txt");
-        string errorsString = to_string(numberOfPeak).append("Peak_errors.txt");
-        file->writeRows(dataString , names, data, 2);
-        file->writeRows(paramsString, &paramNames, &params, 1);
-        file->writeRows(errorsString, &errorsNames, &errors, 1);
-        numberOfPeak +=1;
+        vector<double> lastError;
+        vector<double> numberOfSteps;
+        params.insert(params.begin() , this->params , this->params + 4) ;
+        lastError.push_back(errors.back());
+        numberOfSteps.push_back(errors.size());
+        vector<double> data[] = {freq, theta, params, lastError, numberOfSteps};
+        string names[] = {"Freq", "Theta", "Parameters(y0, yc, xc, width)", "MSE:", "NumberOfSteps"};
+        file->writeRows("FitResult.txt" , names, data, 5);
     }
 }

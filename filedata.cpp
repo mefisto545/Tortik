@@ -56,20 +56,31 @@ bool FileData::readRows()
 void  FileData::writeRows(const string &path , const string *rowNames,const vector<double> *arrays, int size)
 {
     int colIterator = 0, rowIterator = 0;
-    int vectorSize = arrays[0].size();
-    ofstream fileStream(path);
+
+    int maxVectSize = 0;
+    ofstream fileStream(path, ofstream::app);
 
     for (colIterator = 0; colIterator < size; colIterator ++)
     {
         fileStream << rowNames[colIterator] << "\t";
+        int locSize = arrays[colIterator].size();
+        if (locSize > maxVectSize) maxVectSize = locSize;
     }
     fileStream << "\n";
 
-    for (rowIterator = 0; rowIterator < vectorSize; rowIterator++)
+    for (rowIterator = 0; rowIterator < maxVectSize; rowIterator++)
     {
         for (colIterator = 0; colIterator < size; colIterator ++)
         {
-            fileStream << arrays[colIterator][rowIterator] << "\t";
+            int locSize = arrays[colIterator].size();
+            if (locSize > rowIterator)
+            {
+                fileStream << arrays[colIterator][rowIterator] << "\t";
+            }
+            else
+            {
+                fileStream << "\t";
+            }
         }
         fileStream << "\n";
     }
@@ -93,7 +104,7 @@ void FileData::writeFreqAndTheta()
     fileStream.close();
 }
 
-void FileData::writeStackToFile(const string &path, stack<struct AB> stack)
+void FileData::writeStackToFile(const string &path, stack<struct Resonance> stack)
 {
     ofstream fileStream(path);
     while (!stack.empty())

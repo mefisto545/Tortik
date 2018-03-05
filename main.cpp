@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     FileData file("WH.dat","Fgen","Theta"); //Example of creating file class
     file.readRows(); //Reading two rows from file
     double k, y0;
-    stack <struct AB> st;
+    stack <struct Resonance> st;
     file.trigg = 1;
     file.w = 50;
     level(file.freqData, file.phaseData, &k, &y0);

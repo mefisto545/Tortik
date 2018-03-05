@@ -7,10 +7,10 @@ inline double median(double f,double k, double y0)
     return f*k + y0;
 }
 
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct AB> *Stack)
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct Resonance> *Stack)
 {
     int i=1;
-    struct AB ab;
+    struct Resonance resonance;
     double size = x.size();
     bool bad; //true means that this resonance/anti- is too close to another anti-/resonanse
     while(i < size-1)
@@ -21,31 +21,31 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
             {
                 if(y[i-1] > median(x[i], k, y0) - trigg) //check that previous point is not a resonance
                 {
-                    ab.a = i - 1;
+                    resonance.a = i - 1;
                     bad = false;
                 }
                 else
                 {
-                    ab.a = i;
+                    resonance.a = i;
                     bad = true;
                 }
                 while((y[i+1] > median(x[i+1], k, y0) + trigg)&&(i!=size-2))//go to the end of current antiresonance
                     i++;
                 if((y[i+1] > median(x[i+1], k, y0) - trigg)&&(bad == false))//check that next point is not a resonance
-                    ab.b = i + 1;
+                    resonance.b = i + 1;
                 else
-                    ab.b = i;
+                    resonance.b = i;
             }
             else
                 if(y[i-1] < median(x[i], k, y0) - trigg || y[i+1] < median(x[i], k, y0) - trigg)//check for "bad" one-point antiresonance
-                    ab.a = ab.b = i;
+                    resonance.a = resonance.b = i;
                 else
                 {
-                    ab.a = i - 1;
-                    ab.b = i + 1;
+                    resonance.a = i - 1;
+                    resonance.b = i + 1;
                 }
-        ab.snr = SNR(y, ab.a, ab.b, median(x[i], k, y0), trigg, w);
-        Stack->push(ab);
+        resonance.snr = SNR(y, resonance.a, resonance.b, median(x[i], k, y0), trigg, w);
+        Stack->push(resonance);
         }
 
         if(y[i] < median(x[i], k, y0) - trigg) //check for resonance
@@ -54,31 +54,31 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
             {
                 if(y[i-1] < median(x[i], k, y0) + trigg) //check that previous point is not a antiresonance
                 {
-                    ab.a = i - 1;
+                    resonance.a = i - 1;
                     bad = false;
                 }
                 else
                 {
-                    ab.a = i;
+                    resonance.a = i;
                     bad = true;
                 }
                 while((y[i+1] < median(x[i+1], k, y0) - trigg)&&(i!=size-2))//go to the end of current resonance
                     i++;
                 if((y[i+1] < median(x[i+1], k, y0) + trigg)&&(bad == false))//check that next point is not a antiresonance
-                    ab.b = i + 1;
+                    resonance.b = i + 1;
                 else
-                    ab.b = i;
+                    resonance.b = i;
             }
             else
                 if(y[i-1] > median(x[i], k, y0) + trigg || y[i+1] > median(x[i], k, y0) + trigg)//check for "bad" one-point resonance
-                    ab.a = ab.b = i;
+                    resonance.a = resonance.b = i;
                 else
                 {
-                    ab.a = i - 1;
-                    ab.b = i + 1;
+                    resonance.a = i - 1;
+                    resonance.b = i + 1;
                 }
-        ab.snr = SNR(y, ab.a, ab.b, median(x[i], k, y0), trigg, w);
-        Stack->push(ab);
+        resonance.snr = SNR(y, resonance.a, resonance.b, median(x[i], k, y0), trigg, w);
+        Stack->push(resonance);
         }
         i++;
     }

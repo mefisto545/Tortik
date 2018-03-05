@@ -16,7 +16,7 @@ class ResFitter
     vector<double> errors;
     vector<double> freq;
     vector<double> theta;
-    vector<struct AB> resData;
+    vector<struct Resonance> resData;
     double params[4];
     FileData *file;
 
@@ -38,7 +38,7 @@ class ResFitter
     double errorMSE(double *params);
     void gradDescentStep(double *params, double step);
     void gradDescent(double *params, double step);
-    bool readDataFromStack(stack <struct AB> & stack);
+    bool readDataFromStack(stack <struct Resonance> & stack);
     void findParams();
 
 public:
@@ -49,7 +49,7 @@ public:
      * file - element of class, that contain the fitting data*/
     ResFitter(double maxSteps, double minError, double step, FileData *file);
 
-    void fitData(stack <struct AB> &stack);
+    void fitData(stack <struct Resonance> &stack);
 };
 
 #endif // RESFITTER_H
