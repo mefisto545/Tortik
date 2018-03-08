@@ -12,16 +12,18 @@ int main(int argc, char *argv[])
 
     FileData file("WH.dat","Fgen","Theta"); //Example of creating file class
     file.readRows(); //Reading two rows from file
-    double k, y0;
+    double k = 0, y0 = 0;
     stack <struct Resonance> st;
-    file.trigg = 1;
+    file.trigg = 2;
     file.w = 50;
-    level(file.freqData, file.phaseData, &k, &y0);
+    int cycleNum = 1;
+    for (int i=0;  i <cycleNum; i++)
+        level(file.freqData, file.phaseData, &k, &y0, file.trigg);
     trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, &st);
     file.writeStackToFile("StackData.txt", st);
 
-    int maxNumberOfSteps = 1e5;
-    double minError = 0.1, step = 0.5;
+    int maxNumberOfSteps = 1e2; //less steps is better
+    double minError = 0.01, step = 0.1;
     ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
     fitter.fitData(st);
 

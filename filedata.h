@@ -37,9 +37,12 @@ struct Resonance
 {
     int a;
     int b;
+    double freq;
+    double width;
+    double A;
     double snr;
 };
-void level(vector <double> &x, vector <double> &y, double* k, double* y0);
+void level(vector <double> &x, vector <double> &y, double* k, double* y0, double trigg);
 void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct Resonance> *Stack);
 double SNR(vector <double> &y, int a, int b, double median, double trigg, int w);
 
