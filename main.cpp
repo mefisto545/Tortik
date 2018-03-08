@@ -27,11 +27,7 @@ int main(int argc, char *argv[])
     ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
     fitter.fitData(st);
 
-    file.writeFreqAndTheta(); //Write Readed data to file FreqAndTheta.txt
-    string names[] = {"Frequency", "Theta"}; //Names of the rows
-    vector<double> data[] = {file.freqData, file.phaseData}; //Vectors with data
-    file.writeRows("1.txt", names, data, 2); //Write data rows in file and name them as strings from name[]
-
+    file.writeStackToFile("FitedData.txt", fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
 
     return a.exec();
 }

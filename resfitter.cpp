@@ -115,7 +115,8 @@ bool ResFitter::readDataFromStack(stack <struct Resonance> &st)
 
     if (!st.empty())
     {
-        int s = st.top().a, f = st.top().b;
+        resonance = st.top();
+        int s = resonance.a, f = resonance.b;
         for (int i = s; i <=f;i++)
         {
             freq.push_back(file->freqData[i]);
@@ -150,14 +151,32 @@ void ResFitter::fitData(stack <struct Resonance> &stack)
     {
         findParams();
         ResFitter::gradDescent(this->params, step);
+
+        /*Write fitting data to file*/
         vector<double> params;
         vector<double> lastError;
         vector<double> numberOfSteps;
+        string names[] = {"Freq", "Theta", "Parameters(y0, yc, xc, width)", "MSE:", "NumberOfSteps"};
+
         params.insert(params.begin() , this->params , this->params + 4) ;
         lastError.push_back(errors.back());
         numberOfSteps.push_back(errors.size());
         vector<double> data[] = {freq, theta, params, lastError, numberOfSteps};
-        string names[] = {"Freq", "Theta", "Parameters(y0, yc, xc, width)", "MSE:", "NumberOfSteps"};
+
         file->writeRows("FitResult.txt" , names, data, 5);
+
+        /*Write fitting data to stack*/
+        Resonance fittedResonance;
+
+        fittedResonance.a = resonance.a;
+        fittedResonance.b = resonance.b;
+        fittedResonance.mse = errors.back();
+        fittedResonance.y0 = params[0];
+        fittedResonance.yc = params[1];
+        fittedResonance.xc = params[2];
+        fittedResonance.width = params[3];
+        fittedResonance.snr =resonance.snr;
+
+        fittedData.push(fittedResonance);
     }
 }

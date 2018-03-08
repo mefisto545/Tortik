@@ -20,6 +20,7 @@ class ResFitter
     vector<double> freq;
     vector<double> theta;
     vector<struct Resonance> resData;
+    Resonance resonance;
     double params[4];
     FileData *file;
 
@@ -45,6 +46,7 @@ class ResFitter
     void findParams();
 
 public:
+    stack<struct Resonance> fittedData;
     /*ResFitter - method that perform fitting data with Lorentz peak function. The result of fitting writes in text files.
      * maxSteps - maximum number of steps that can be performed in gradient descend
      * minError - the minimum error level that will stop the descend

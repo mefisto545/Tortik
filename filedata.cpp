@@ -104,13 +104,21 @@ void FileData::writeFreqAndTheta()
     fileStream.close();
 }
 
-void FileData::writeStackToFile(const string &path, stack<struct Resonance> stack)
+void FileData::writeStackToFile(const string &path, stack<struct Resonance> st)
 {
     ofstream fileStream(path);
-    while (!stack.empty())
+    fileStream << "№Fa\t" << "№Fb\t" << "SNR\t" << "y0\t" << "yc\t" << "xc\t" << "width\t" << "mse\n";
+    while (!st.empty())
     {
-        fileStream << stack.top().a << "\t" << stack.top().b << "\t" << stack.top().snr << "\n";
-        stack.pop();
+        fileStream << st.top().a << "\t"
+                   << st.top().b << "\t"
+                   << st.top().snr << "\t"
+                   << st.top().y0 << "\t"
+                   << st.top().yc << "\t"//
+                   << st.top().xc << "\t"
+                   << st.top().width << "\t"
+                   << st.top().mse << "\n";
+        st.pop();
     }
     fileStream.close();
 }
