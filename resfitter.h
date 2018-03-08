@@ -5,14 +5,17 @@
 #include "filedata.h"
 #include <math.h>
 #include <stack>
+#include <iostream>
 
 using namespace std;
 
 class ResFitter
 {
-    int maxSteps = 1e4;
-    double minError = 1e-2;
-    double step = 1e-4;
+    int maxSteps;
+    double minError;
+    double step;
+    double y0;
+    double k;
     vector<double> errors;
     vector<double> freq;
     vector<double> theta;
@@ -47,7 +50,7 @@ public:
      * minError - the minimum error level that will stop the descend
      * step - the value in gradient descend method  y1 = y0 - step*grad
      * file - element of class, that contain the fitting data*/
-    ResFitter(double maxSteps, double minError, double step, FileData *file);
+    ResFitter(double maxSteps, double minError, double step, FileData *file, double y0, double k);
 
     void fitData(stack <struct Resonance> &stack);
 };

@@ -1,11 +1,13 @@
 #include "resfitter.h"
 
-ResFitter::ResFitter(double maxSteps, double minError, double step, FileData* file)
+ResFitter::ResFitter(double maxSteps, double minError, double step, FileData* file, double y0, double k)
 {
     this->maxSteps = maxSteps;
     this->minError = minError;
     this->file = file;
     this->step = step;
+    this->k = k;
+    this->y0 = y0;
 }
 
 double ResFitter::lorentz(double x, double y0, double yc, double xc, double w)
@@ -65,33 +67,32 @@ double ResFitter::errorMSE(double *params)
     int i = 0;
     double sum = 0.0;
     for (i = 0; i < size; i++){
-        sum += pow((theta[i] - lorentz(freq[i], params))/theta[i], 2.0);
+        sum += pow((theta[i] - lorentz(freq[i], params)), 2.0);
     }
     return sum / (double)size;
 }
 
 void ResFitter::gradDescentStep(double *params, double step)
 {
-    double dy0 = 0, dxc = 0, dw = 0, dyc = 0;
+    double dxc = 0.0, dw = 0.0, dyc = 0.0;
     int i, size = freq.size();
     for (i = 0; i < size; i ++)
     {
-        dy0 -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDy0(freq[i], params) / size;
-        dyc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDyc(freq[i], params) / size;
-        dxc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDxc(freq[i], params) / size;
-        dw -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDw(freq[i], params) / size;
+        dyc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDyc(freq[i], params) / (double) size;
+        dxc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDxc(freq[i], params) / (double) size;
+        dw -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDw(freq[i], params) / (double) size;
     }
-    double dParams[] = {step * dy0, step * dyc, step * dxc, step * dw};
-    for (int i = 0; i < 4; i ++)
+    double dParams[] = {0.0, step * dyc, step * dxc, step * dw};
+
+    for (int i = 1; i < 4; i ++)
     {
-        double newParams = params[i] - dParams[i];
-        if (newParams > 0.0)
+        double newParam = params[i] - dParams[i];
+        if (newParam > 0.0)
         {
-            params[i] = newParams;
+            params[i] = newParam;
         }
     }
 }
-
 void ResFitter::gradDescent(double *params, double step)
 {
     double locError = 1;
@@ -135,7 +136,7 @@ void ResFitter::findParams()
         sum += freq[i];
         if (theta[i] < theta[min]) min = i;
     }
-    params[0] = (theta[0] + theta.back())/2.0; /*x_x*/
+    params[0] = y0 + freq[min] * k;
     params[1]= theta[min];
     params[2]= freq[min];
     params[3]= (freq.back() - freq[0]) / 2.0;

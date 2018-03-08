@@ -20,7 +20,9 @@ int main(int argc, char *argv[])
     trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, &st);
     file.writeStackToFile("StackData.txt", st);
 
-    ResFitter fitter(1e4, 1e-3, 1e-4,&file);
+    int maxNumberOfSteps = 1e5;
+    double minError = 0.1, step = 0.5;
+    ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
     fitter.fitData(st);
 
     file.writeFreqAndTheta(); //Write Readed data to file FreqAndTheta.txt
