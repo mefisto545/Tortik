@@ -24,6 +24,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -35,16 +36,25 @@ public:
     QWidget *formLayoutWidget;
     QFormLayout *formLayout;
     QLineEdit *lineEditTrigg;
-    QLabel *labelW;
-    QLineEdit *lineEditW;
     QLabel *labelTrigg;
+    QHBoxLayout *horizontalLayout_2;
+    QSpinBox *spinBoxCycleNum;
+    QLabel *label;
+    QSpinBox *spinBoxW;
+    QLabel *labelW;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButtonRun;
-    QWidget *horizontalLayoutWidget_2;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label;
-    QSpinBox *spinBoxCycleNum;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QLabel *labelImport;
+    QLineEdit *lineEditImport;
+    QLabel *labelFreq;
+    QLineEdit *lineEditFreq;
+    QLabel *labelPhase;
+    QLineEdit *lineEditPhase;
+    QLabel *labelExportFileName;
+    QLineEdit *lineEditExport;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -53,12 +63,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(400, 306);
+        MainWindow->resize(409, 307);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         formLayoutWidget = new QWidget(centralWidget);
         formLayoutWidget->setObjectName(QStringLiteral("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(30, 140, 160, 51));
+        formLayoutWidget->setGeometry(QRect(230, 50, 160, 76));
         formLayout = new QFormLayout(formLayoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -69,24 +79,45 @@ public:
 
         formLayout->setWidget(0, QFormLayout::FieldRole, lineEditTrigg);
 
-        labelW = new QLabel(formLayoutWidget);
-        labelW->setObjectName(QStringLiteral("labelW"));
-
-        formLayout->setWidget(1, QFormLayout::LabelRole, labelW);
-
-        lineEditW = new QLineEdit(formLayoutWidget);
-        lineEditW->setObjectName(QStringLiteral("lineEditW"));
-
-        formLayout->setWidget(1, QFormLayout::FieldRole, lineEditW);
-
         labelTrigg = new QLabel(formLayoutWidget);
         labelTrigg->setObjectName(QStringLiteral("labelTrigg"));
 
         formLayout->setWidget(0, QFormLayout::LabelRole, labelTrigg);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        spinBoxCycleNum = new QSpinBox(formLayoutWidget);
+        spinBoxCycleNum->setObjectName(QStringLiteral("spinBoxCycleNum"));
+        spinBoxCycleNum->setMinimum(1);
+        spinBoxCycleNum->setMaximum(5);
+
+        horizontalLayout_2->addWidget(spinBoxCycleNum);
+
+
+        formLayout->setLayout(2, QFormLayout::FieldRole, horizontalLayout_2);
+
+        label = new QLabel(formLayoutWidget);
+        label->setObjectName(QStringLiteral("label"));
+
+        formLayout->setWidget(2, QFormLayout::LabelRole, label);
+
+        spinBoxW = new QSpinBox(formLayoutWidget);
+        spinBoxW->setObjectName(QStringLiteral("spinBoxW"));
+        spinBoxW->setMinimum(1);
+        spinBoxW->setMaximum(999);
+        spinBoxW->setValue(50);
+
+        formLayout->setWidget(1, QFormLayout::FieldRole, spinBoxW);
+
+        labelW = new QLabel(formLayoutWidget);
+        labelW->setObjectName(QStringLiteral("labelW"));
+
+        formLayout->setWidget(1, QFormLayout::LabelRole, labelW);
+
         horizontalLayoutWidget = new QWidget(centralWidget);
         horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(270, 210, 111, 41));
+        horizontalLayoutWidget->setGeometry(QRect(250, 180, 111, 41));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -97,30 +128,62 @@ public:
 
         horizontalLayout->addWidget(pushButtonRun);
 
-        horizontalLayoutWidget_2 = new QWidget(centralWidget);
-        horizontalLayoutWidget_2->setObjectName(QStringLiteral("horizontalLayoutWidget_2"));
-        horizontalLayoutWidget_2->setGeometry(QRect(220, 120, 160, 80));
-        horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget_2);
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(horizontalLayoutWidget_2);
-        label->setObjectName(QStringLiteral("label"));
+        verticalLayoutWidget = new QWidget(centralWidget);
+        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(30, 50, 191, 176));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        labelImport = new QLabel(verticalLayoutWidget);
+        labelImport->setObjectName(QStringLiteral("labelImport"));
 
-        horizontalLayout_2->addWidget(label);
+        verticalLayout->addWidget(labelImport);
 
-        spinBoxCycleNum = new QSpinBox(horizontalLayoutWidget_2);
-        spinBoxCycleNum->setObjectName(QStringLiteral("spinBoxCycleNum"));
-        spinBoxCycleNum->setMinimum(1);
-        spinBoxCycleNum->setMaximum(5);
+        lineEditImport = new QLineEdit(verticalLayoutWidget);
+        lineEditImport->setObjectName(QStringLiteral("lineEditImport"));
 
-        horizontalLayout_2->addWidget(spinBoxCycleNum);
+        verticalLayout->addWidget(lineEditImport);
+
+        labelFreq = new QLabel(verticalLayoutWidget);
+        labelFreq->setObjectName(QStringLiteral("labelFreq"));
+
+        verticalLayout->addWidget(labelFreq);
+
+        lineEditFreq = new QLineEdit(verticalLayoutWidget);
+        lineEditFreq->setObjectName(QStringLiteral("lineEditFreq"));
+
+        verticalLayout->addWidget(lineEditFreq);
+
+        labelPhase = new QLabel(verticalLayoutWidget);
+        labelPhase->setObjectName(QStringLiteral("labelPhase"));
+
+        verticalLayout->addWidget(labelPhase);
+
+        lineEditPhase = new QLineEdit(verticalLayoutWidget);
+        lineEditPhase->setObjectName(QStringLiteral("lineEditPhase"));
+
+        verticalLayout->addWidget(lineEditPhase);
+
+        labelExportFileName = new QLabel(verticalLayoutWidget);
+        labelExportFileName->setObjectName(QStringLiteral("labelExportFileName"));
+
+        verticalLayout->addWidget(labelExportFileName);
+
+        lineEditExport = new QLineEdit(verticalLayoutWidget);
+        lineEditExport->setObjectName(QStringLiteral("lineEditExport"));
+
+        verticalLayout->addWidget(lineEditExport);
 
         MainWindow->setCentralWidget(centralWidget);
+        formLayoutWidget->raise();
+        horizontalLayoutWidget->raise();
+        verticalLayoutWidget->raise();
+        labelW->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 400, 21));
+        menuBar->setGeometry(QRect(0, 0, 409, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -138,11 +201,18 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         lineEditTrigg->setText(QApplication::translate("MainWindow", "1", 0));
-        labelW->setText(QApplication::translate("MainWindow", "W", 0));
-        lineEditW->setText(QApplication::translate("MainWindow", "50", 0));
         labelTrigg->setText(QApplication::translate("MainWindow", "trigg", 0));
-        pushButtonRun->setText(QApplication::translate("MainWindow", "Run", 0));
         label->setText(QApplication::translate("MainWindow", "cycleNum", 0));
+        labelW->setText(QApplication::translate("MainWindow", "W", 0));
+        pushButtonRun->setText(QApplication::translate("MainWindow", "Run", 0));
+        labelImport->setText(QApplication::translate("MainWindow", "Import file name", 0));
+        lineEditImport->setText(QApplication::translate("MainWindow", "WH.dat", 0));
+        labelFreq->setText(QApplication::translate("MainWindow", "Frequency column name", 0));
+        lineEditFreq->setText(QApplication::translate("MainWindow", "Fgen", 0));
+        labelPhase->setText(QApplication::translate("MainWindow", "Phase column name", 0));
+        lineEditPhase->setText(QApplication::translate("MainWindow", "Theta", 0));
+        labelExportFileName->setText(QApplication::translate("MainWindow", "Export File Name", 0));
+        lineEditExport->setText(QApplication::translate("MainWindow", "FitedData.txt", 0));
     } // retranslateUi
 
 };

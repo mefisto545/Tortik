@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>306</height>
+    <width>409</width>
+    <height>307</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>140</y>
+      <x>230</x>
+      <y>50</y>
       <width>160</width>
-      <height>51</height>
+      <height>76</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -31,24 +31,51 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelW">
-       <property name="text">
-        <string>W</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEditW">
-       <property name="text">
-        <string>50</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="labelTrigg">
        <property name="text">
         <string>trigg</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QSpinBox" name="spinBoxCycleNum">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>5</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>cycleNum</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="spinBoxW">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
+       <property name="value">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelW">
+       <property name="text">
+        <string>W</string>
        </property>
       </widget>
      </item>
@@ -57,8 +84,8 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>210</y>
+      <x>250</x>
+      <y>180</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -73,42 +100,85 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>120</y>
-      <width>160</width>
-      <height>80</height>
+      <x>30</x>
+      <y>50</y>
+      <width>191</width>
+      <height>176</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labelImport">
        <property name="text">
-        <string>cycleNum</string>
+        <string>Import file name</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBoxCycleNum">
-       <property name="minimum">
-        <number>1</number>
+      <widget class="QLineEdit" name="lineEditImport">
+       <property name="text">
+        <string>WH.dat</string>
        </property>
-       <property name="maximum">
-        <number>5</number>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelFreq">
+       <property name="text">
+        <string>Frequency column name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditFreq">
+       <property name="text">
+        <string>Fgen</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelPhase">
+       <property name="text">
+        <string>Phase column name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditPhase">
+       <property name="text">
+        <string>Theta</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelExportFileName">
+       <property name="text">
+        <string>Export File Name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditExport">
+       <property name="text">
+        <string>FitedData.txt</string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
+   <zorder>formLayoutWidget</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>verticalLayoutWidget</zorder>
+   <zorder>labelW</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>409</width>
      <height>21</height>
     </rect>
    </property>

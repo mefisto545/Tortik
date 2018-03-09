@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <iostream>
 #include <QMessageBox>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,12 +21,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButtonRun_clicked()
 {
-    FileData file("WH.dat","Fgen","Theta"); //Example of creating file class
+    string ImportFileName = ui->lineEditImport->text().toStdString();
+    string FreqColumnName = ui->lineEditFreq->text().toStdString();
+    string PhaseColumnName = ui->lineEditPhase->text().toStdString();
+    string ExportFileName = ui->lineEditExport->text().toStdString();
+    FileData file(ImportFileName,FreqColumnName, PhaseColumnName); //Example of creating file class
     file.readRows(); //Reading two rows from file
+
     double k = 0, y0 = 0;
     stack <struct Resonance> st;
     file.trigg = ui->lineEditTrigg->text().toDouble();
-    file.w = ui->lineEditW->text().toInt();
+    file.w = ui->spinBoxW->value();
     file.cycleNum = ui->spinBoxCycleNum->value();
     for (int i=0;  i < file.cycleNum; i++)
         level(file.freqData, file.phaseData, &k, &y0, file.trigg);
@@ -36,6 +42,6 @@ void MainWindow::on_pushButtonRun_clicked()
     ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
     fitter.fitData(st);
 
-    file.writeStackToFile("FitedData.txt", fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
+    file.writeStackToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
     QMessageBox::about(this, "Result", "Done");
 }
