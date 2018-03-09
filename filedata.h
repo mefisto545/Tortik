@@ -23,6 +23,7 @@ public:
     vector<double> phaseData;                                          // Вектор со значениями фазы
     double trigg;                                                       // half-wight of non-resonance zone
     int w;                                                              // half-wight of noise research area
+    int cycleNum;                                                       // number of cycles in median parameters calculation
     FileData(const string &path, const string &freqName, const string &phaseName);// Конструктор с путём к файлу, названиями столбцов
     bool readRows();                                                                  // Чтение столбцов с названиями из row
     void writeRows(const string &path, const string *rowNames, const vector<double> *arrays, int size); //Запись столбцов в файл
