@@ -22,7 +22,9 @@ void level(vector <double> &x, vector <double> &y, double* k, double* y0, double
     double   sumy = 0.0;                      /* sum of y     */
     double   sumy2 = 0.0;                     /* sum of y**2  */
     int size = x.size();
+    int N = 0;
     if (*k == 0 && *y0 == 0)
+    {
         for (int i=0; i < size; i++)
         {
             sumx  += x[i];
@@ -31,7 +33,9 @@ void level(vector <double> &x, vector <double> &y, double* k, double* y0, double
             sumy  += y[i];
             sumy2 += y[i] * y[i];
         }
+    }
     else
+    {
         for (int i=0; i < size; i++)
         {
             if((y[i] > median(x[i], *k, *y0) - trigg) && (y[i] < median(x[i], *k, *y0) + trigg))
@@ -41,8 +45,11 @@ void level(vector <double> &x, vector <double> &y, double* k, double* y0, double
                 sumxy += x[i] * y[i];
                 sumy  += y[i];
                 sumy2 += y[i] * y[i];
+                N++;
             }
         }
+        size = N;
+    }
     double denom = (size * sumx2 - sumx * sumx);
     if (denom == 0)
         abort();

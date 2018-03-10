@@ -90,7 +90,7 @@ public:
         spinBoxCycleNum = new QSpinBox(formLayoutWidget);
         spinBoxCycleNum->setObjectName(QStringLiteral("spinBoxCycleNum"));
         spinBoxCycleNum->setMinimum(1);
-        spinBoxCycleNum->setMaximum(5);
+        spinBoxCycleNum->setMaximum(10);
 
         horizontalLayout_2->addWidget(spinBoxCycleNum);
 
