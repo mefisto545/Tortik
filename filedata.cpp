@@ -9,7 +9,7 @@ FileData::FileData(const string &path, const string &freqName, const string &pha
     freqColNum = -1;                                                      // отрицательной единицей
 }
 
-bool FileData::readRows()
+int FileData::readRows()
 {
     ifstream fileStream(filePath);                                // Создание потока и подключение к файлу с данными
     string localWord;                                                   // Локальная переменная на отдельного названия столбца/ Отдельного значения
@@ -20,7 +20,8 @@ bool FileData::readRows()
 
     getline(fileStream, localLine);                               // Получение и запись первой строки с заголовками
     ss = stringstream(localLine);                                //Создание потока этой строки
-
+    if(fileStream.peek() == std::ifstream::traits_type::eof())
+        return 1;
     while (ss >> localWord)
     {
         if (localWord == phaseColName) phaseColNum = numWord;              // Нахождение
@@ -28,8 +29,11 @@ bool FileData::readRows()
         numWord++;                                                                                        // столбцов, интересных нам
     }
     numWord = 0;                                                                                          // Обнуление итератора после прохождение 1 строки
-
-    if (phaseColNum < 0 || freqColNum < 0) return false;                           // Если не нашли один из столбцов, завершаем работу=(
+    // Если не нашли один из столбцов, завершаем работу=(
+    if (freqColNum < 0)
+        return 2;
+    if (phaseColNum < 0)
+        return 3;
 
     while (!fileStream.eof())                                                                          // Читаем, пока файл не закончится
     {

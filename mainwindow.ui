@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>50</y>
+      <y>70</y>
       <width>160</width>
       <height>76</height>
      </rect>
@@ -34,7 +34,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="labelTrigg">
        <property name="text">
-        <string>trigg</string>
+        <string>Trigger</string>
        </property>
       </widget>
      </item>
@@ -55,7 +55,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>cycleNum</string>
+        <string>Number of cycles</string>
        </property>
       </widget>
      </item>
@@ -75,7 +75,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="labelW">
        <property name="text">
-        <string>W</string>
+        <string>Noise wight</string>
        </property>
       </widget>
      </item>
@@ -168,10 +168,6 @@
      </item>
     </layout>
    </widget>
-   <zorder>formLayoutWidget</zorder>
-   <zorder>horizontalLayoutWidget</zorder>
-   <zorder>verticalLayoutWidget</zorder>
-   <zorder>labelW</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -68,7 +68,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         formLayoutWidget = new QWidget(centralWidget);
         formLayoutWidget->setObjectName(QStringLiteral("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(230, 50, 160, 76));
+        formLayoutWidget->setGeometry(QRect(230, 70, 160, 76));
         formLayout = new QFormLayout(formLayoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -177,10 +177,6 @@ public:
         verticalLayout->addWidget(lineEditExport);
 
         MainWindow->setCentralWidget(centralWidget);
-        formLayoutWidget->raise();
-        horizontalLayoutWidget->raise();
-        verticalLayoutWidget->raise();
-        labelW->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 409, 21));
@@ -201,9 +197,9 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         lineEditTrigg->setText(QApplication::translate("MainWindow", "1", 0));
-        labelTrigg->setText(QApplication::translate("MainWindow", "trigg", 0));
-        label->setText(QApplication::translate("MainWindow", "cycleNum", 0));
-        labelW->setText(QApplication::translate("MainWindow", "W", 0));
+        labelTrigg->setText(QApplication::translate("MainWindow", "Trigger", 0));
+        label->setText(QApplication::translate("MainWindow", "Number of cycles", 0));
+        labelW->setText(QApplication::translate("MainWindow", "Noise wight", 0));
         pushButtonRun->setText(QApplication::translate("MainWindow", "Run", 0));
         labelImport->setText(QApplication::translate("MainWindow", "Import file name", 0));
         lineEditImport->setText(QApplication::translate("MainWindow", "WH.dat", 0));
