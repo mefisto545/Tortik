@@ -93,6 +93,7 @@ void ResFitter::gradDescentStep(double *params, double step)
         }
     }
 }
+
 void ResFitter::gradDescent(double *params, double step)
 {
     double locError = 1;

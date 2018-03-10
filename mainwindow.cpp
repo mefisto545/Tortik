@@ -18,6 +18,43 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &vectory, stack<struct Resonance> fittedData)
+{
+    // clear graphs data
+    ui->customPlot->clearGraphs();
+
+    // create graph and assign data to it:
+    ui->customPlot->addGraph();
+    QVector<double> x = QVector<double>::fromStdVector(vectorx);
+    QVector<double> y = QVector<double>::fromStdVector(vectory);
+    ui->customPlot->graph(0)->setData(x, y);
+
+    // create graphs that show finded resonances
+    int resNum = 1;
+    while(!fittedData.empty())
+    {
+        Resonance resonance = fittedData.top();
+
+        ui->customPlot->addGraph();
+        ui->customPlot->graph(resNum)->setPen(QPen(Qt::red));
+
+        for (int k = resonance.a; k <= resonance.b; k++)
+        {
+            ui->customPlot->graph(resNum)->addData(vectorx[k], vectory[k]);
+        }
+        resNum++;
+        fittedData.pop();
+    }
+    // give the axes appropriate labels:
+    ui->customPlot->xAxis->setLabel("Freq");
+    ui->customPlot->yAxis->setLabel("Theta");
+
+    // set axes ranges, so we see all data:
+    ui->customPlot->graph(0)->rescaleAxes();
+    ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->customPlot->replot();
+}
+
 void MainWindow::on_pushButtonRun_clicked()
 {
     string ImportFileName = ui->lineEditImport->text().toStdString();
@@ -53,5 +90,6 @@ void MainWindow::on_pushButtonRun_clicked()
     fitter.fitData(st);
 
     file.writeStackToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
+    MainWindow::showGraph(file.freqData, file.phaseData, fitter.fittedData);
     QMessageBox::about(this, "Result", "Done");
 }

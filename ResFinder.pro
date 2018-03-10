@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = ResFinder
 TEMPLATE = app
@@ -18,10 +18,12 @@ SOURCES += main.cpp\
     Level.cpp \
     trigger.cpp \
     resfitter.cpp \
-    snr.cpp
+    snr.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     filedata.h \
-    resfitter.h
+    resfitter.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui

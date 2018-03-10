@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <vector>
+#include <stack>
 
 namespace Ui {
 class MainWindow;
@@ -13,6 +15,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void showGraph(const std::vector<double> &vectorx, const std::vector<double> &vectory, std::stack<struct Resonance> fittedData);
     ~MainWindow();
 
 private slots:
