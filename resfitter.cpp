@@ -20,17 +20,6 @@ double ResFitter::lorentz(double x, double *params)
     return ResFitter::lorentz(x, params[0], params[1], params[2], params[3]);
 }
 
-double ResFitter::lorentzDy0(double x, double xc, double w)
-{
-    return 1.0 / (1.0 + pow(w, 2.0) / (4.0 * pow(x - xc,2.0)));
-}
-
-double ResFitter::lorentzDy0(double x, double *params)
-{
-    double result = ResFitter::lorentzDy0(x, params[2], params[3]);
-    return result;
-}
-
 double ResFitter::lorentzDyc(double x, double xc, double w)
 {
     return 1.0 / (1.0 + 4.0 * pow(x - xc, 2.0) / pow(w, 2.0) );
@@ -74,20 +63,21 @@ double ResFitter::errorMSE(double *params)
 
 void ResFitter::gradDescentStep(double *params, double step)
 {
-    double dxc = 0.0, dw = 0.0, dyc = 0.0;
-    int i, size = freq.size();
-    for (i = 0; i < size; i ++)
+    double dxc = 0.0, dw = 0.0, dyc = 0.0; //components of gradient
+    int size = freq.size();
+    for (int i = 0; i < size; i ++)
     {
         dyc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDyc(freq[i], params) / (double) size;
         dxc -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDxc(freq[i], params) / (double) size;
         dw -= 2.0 * (theta[i] - ResFitter::lorentz(freq[i], params)) * ResFitter::lorentzDw(freq[i], params) / (double) size;
     }
-    double dParams[] = {0.0, step * dyc, step * dxc, step * dw};
+    double dParams[] = {0.0, step * dyc, step * dxc, step * dw}; // gradient
+
 
     for (int i = 1; i < 4; i ++)
     {
         double newParam = params[i] - dParams[i];
-        if (newParam > 0.0)
+        if (newParam > 0.0 || i ==1) // because yc can be lower than zero
         {
             params[i] = newParam;
         }
@@ -146,8 +136,6 @@ void ResFitter::findParams()
 
 void ResFitter::fitData(stack <struct Resonance> &stack)
 {
-    ofstream ofile("FitResult.txt");
-    ofile.close();
     while (ResFitter::readDataFromStack(stack))
     {
         findParams();
@@ -159,14 +147,11 @@ void ResFitter::fitData(stack <struct Resonance> &stack)
         vector<double> numberOfSteps;
         string names[] = {"Freq", "Theta", "Parameters(y0, yc, xc, width)", "MSE:", "NumberOfSteps"};
 
-        params.insert(params.begin() , this->params , this->params + 4) ;
+        params.insert(params.begin() , this->params , this->params + 4);
         lastError.push_back(errors.back());
         numberOfSteps.push_back(errors.size());
-        vector<double> data[] = {freq, theta, params, lastError, numberOfSteps};
 
-        file->writeRows("FitResult.txt" , names, data, 5);
-
-        /*Write fitting data to stack*/
+        /*Write fitting data to vector fittedData*/
         Resonance fittedResonance;
 
         fittedResonance.a = resonance.a;
@@ -178,6 +163,6 @@ void ResFitter::fitData(stack <struct Resonance> &stack)
         fittedResonance.width = params[3];
         fittedResonance.snr =resonance.snr;
 
-        fittedData.push(fittedResonance);
+        fittedData.push_back(fittedResonance);
     }
 }

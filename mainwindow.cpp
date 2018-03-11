@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &vectory,
-                           stack<struct Resonance> fittedData, double k, double y0, double trigg)
+                           vector<struct Resonance> fittedData, double k, double y0, double trigg)
 {
     // clear graphs data
     ui->customPlot->clearGraphs();
@@ -44,10 +44,10 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     ui->customPlot->graph(3)->addData(vectorx[0], y0-trigg+k*vectorx[0]);
     ui->customPlot->graph(3)->addData(vectorx[size-1], y0-trigg+k*vectorx[size-1]);
     // create graphs that show found resonances
-    int resNum = 4;
-    while(!fittedData.empty())
+    int resNum = 4, numOfRes = fittedData.size();
+    for(int i = 0; i < numOfRes; i++)
     {
-        Resonance resonance = fittedData.top();
+        Resonance resonance = fittedData[i];
 
         ui->customPlot->addGraph();
         ui->customPlot->graph(resNum)->setPen(QPen(Qt::red));
@@ -62,7 +62,6 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
             ui->customPlot->graph(resNum)->addData(vectorx[resonance.a+1], vectory[resonance.a+1]);
         }
         resNum++;
-        fittedData.pop();
     }
     // give the axes appropriate labels:
     ui->customPlot->xAxis->setLabel("Freq");
@@ -70,7 +69,7 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
 
     // set axes ranges, so we see all data:
     ui->customPlot->graph(0)->rescaleAxes();
-    ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     ui->customPlot->replot();
 }
 
@@ -109,7 +108,7 @@ void MainWindow::on_pushButtonRun_clicked()
     ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
     fitter.fitData(st);
 
-    file.writeStackToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
+    file.writeVectorToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
     MainWindow::showGraph(file.freqData, file.phaseData, fitter.fittedData, k, y0, file.trigg);
     QMessageBox::about(this, "Result", "Done");
 }

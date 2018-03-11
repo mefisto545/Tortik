@@ -27,9 +27,6 @@ class ResFitter
     double lorentz(double x, double y0, double yc, double xc, double w);
     double lorentz(double x, double *params);
 
-    double lorentzDy0(double x, double xc, double w);
-    double lorentzDy0(double x, double *params);
-
     double lorentzDyc(double x, double xc, double w);
     double lorentzDyc(double x, double *params);
 
@@ -46,7 +43,7 @@ class ResFitter
     void findParams();
 
 public:
-    stack<struct Resonance> fittedData;
+    vector<struct Resonance> fittedData;
     /*ResFitter - method that perform fitting data with Lorentz peak function. The result of fitting writes in text files.
      * maxSteps - maximum number of steps that can be performed in gradient descend
      * minError - the minimum error level that will stop the descend

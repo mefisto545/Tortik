@@ -126,3 +126,23 @@ void FileData::writeStackToFile(const string &path, stack<struct Resonance> st)
     }
     fileStream.close();
 }
+
+void FileData::writeVectorToFile(const string &path, const vector<struct Resonance> &data)
+{
+    ofstream fileStream(path);
+    fileStream << "Fleft\t" << "Fright\t" << "SNR\t" << "dTheta\t"<< "y0\t" << "yc\t" << "xc\t" << "width\t" << "mse\n";
+    int numOfResonances = data.size();
+    for (int i = 0; i < numOfResonances; i++)
+    {
+        fileStream << freqData[data[i].a] << "\t"
+                   << freqData[data[i].b] << "\t"
+                   << data[i].snr << "\t"
+                   <<data[i].y0 - data[i].yc << "\t"
+                   << data[i].y0 << "\t"
+                   << data[i].yc << "\t"//
+                   << data[i].xc << "\t"
+                   << data[i].width << "\t"
+                   << data[i].mse << "\n";
+    }
+    fileStream.close();
+}
