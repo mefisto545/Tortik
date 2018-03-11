@@ -104,8 +104,8 @@ void MainWindow::on_pushButtonRun_clicked()
         level(file.freqData, file.phaseData, &k, &y0, file.trigg);
     trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, ui->checkBox->isChecked(), file.minSNR, &st);
 
-    int maxNumberOfSteps = 1e2; //less steps is better
-    double minError = 0.001, step = 0.1;
+    int maxNumberOfSteps = ui->lineEditNumOfSteps->text().toDouble(); //less steps is better
+    double minError = ui->lineEditMinError->text().toDouble(), step = ui->lineEditFitStep->text().toDouble();
     ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
     fitter.fitData(st);
 

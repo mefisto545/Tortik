@@ -48,15 +48,21 @@ public:
     QLineEdit *lineEditPhase;
     QLabel *labelExportFileName;
     QLineEdit *lineEditExport;
+    QSpacerItem *verticalSpacer_2;
     QFormLayout *formLayout;
     QLabel *labelTrigg;
     QLineEdit *lineEditTrigg;
     QLabel *labelW;
     QSpinBox *spinBoxW;
+    QLabel *labelFitStep;
+    QLineEdit *lineEditFitStep;
+    QLabel *label_3;
+    QLineEdit *lineEditMinError;
+    QLabel *labelNumOfSteps;
+    QLineEdit *lineEditNumOfSteps;
     QLabel *label;
     QHBoxLayout *horizontalLayout_2;
     QSpinBox *spinBoxCycleNum;
-    QSpacerItem *verticalSpacer;
     QVBoxLayout *verticalLayout_2;
     QCheckBox *checkBox;
     QHBoxLayout *horizontalLayout_3;
@@ -72,16 +78,16 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(500, 485);
-        MainWindow->setMinimumSize(QSize(500, 480));
+        MainWindow->resize(500, 520);
+        MainWindow->setMinimumSize(QSize(500, 520));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         customPlot = new QCustomPlot(centralWidget);
         customPlot->setObjectName(QStringLiteral("customPlot"));
-        customPlot->setGeometry(QRect(20, 220, 461, 231));
+        customPlot->setGeometry(QRect(20, 250, 461, 231));
         horizontalLayoutWidget_3 = new QWidget(centralWidget);
         horizontalLayoutWidget_3->setObjectName(QStringLiteral("horizontalLayoutWidget_3"));
-        horizontalLayoutWidget_3->setGeometry(QRect(70, 10, 351, 191));
+        horizontalLayoutWidget_3->setGeometry(QRect(70, 10, 351, 262));
         horizontalLayout_4 = new QHBoxLayout(horizontalLayoutWidget_3);
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -90,6 +96,7 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
         labelImport = new QLabel(horizontalLayoutWidget_3);
         labelImport->setObjectName(QStringLiteral("labelImport"));
 
@@ -130,6 +137,10 @@ public:
 
         verticalLayout->addWidget(lineEditExport);
 
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
 
         horizontalLayout_4->addLayout(verticalLayout);
 
@@ -159,10 +170,41 @@ public:
 
         formLayout->setWidget(1, QFormLayout::FieldRole, spinBoxW);
 
+        labelFitStep = new QLabel(horizontalLayoutWidget_3);
+        labelFitStep->setObjectName(QStringLiteral("labelFitStep"));
+        labelFitStep->setAlignment(Qt::AlignCenter);
+
+        formLayout->setWidget(2, QFormLayout::LabelRole, labelFitStep);
+
+        lineEditFitStep = new QLineEdit(horizontalLayoutWidget_3);
+        lineEditFitStep->setObjectName(QStringLiteral("lineEditFitStep"));
+
+        formLayout->setWidget(2, QFormLayout::FieldRole, lineEditFitStep);
+
+        label_3 = new QLabel(horizontalLayoutWidget_3);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, label_3);
+
+        lineEditMinError = new QLineEdit(horizontalLayoutWidget_3);
+        lineEditMinError->setObjectName(QStringLiteral("lineEditMinError"));
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, lineEditMinError);
+
+        labelNumOfSteps = new QLabel(horizontalLayoutWidget_3);
+        labelNumOfSteps->setObjectName(QStringLiteral("labelNumOfSteps"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, labelNumOfSteps);
+
+        lineEditNumOfSteps = new QLineEdit(horizontalLayoutWidget_3);
+        lineEditNumOfSteps->setObjectName(QStringLiteral("lineEditNumOfSteps"));
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, lineEditNumOfSteps);
+
         label = new QLabel(horizontalLayoutWidget_3);
         label->setObjectName(QStringLiteral("label"));
 
-        formLayout->setWidget(2, QFormLayout::LabelRole, label);
+        formLayout->setWidget(5, QFormLayout::LabelRole, label);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
@@ -175,11 +217,7 @@ public:
         horizontalLayout_2->addWidget(spinBoxCycleNum);
 
 
-        formLayout->setLayout(2, QFormLayout::FieldRole, horizontalLayout_2);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        formLayout->setItem(4, QFormLayout::SpanningRole, verticalSpacer);
+        formLayout->setLayout(5, QFormLayout::FieldRole, horizontalLayout_2);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
@@ -187,6 +225,8 @@ public:
         verticalLayout_2->setContentsMargins(-1, -1, 0, -1);
         checkBox = new QCheckBox(horizontalLayoutWidget_3);
         checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox->setEnabled(true);
+        checkBox->setChecked(false);
 
         verticalLayout_2->addWidget(checkBox);
 
@@ -208,7 +248,7 @@ public:
         verticalLayout_2->addLayout(horizontalLayout_3);
 
 
-        formLayout->setLayout(3, QFormLayout::SpanningRole, verticalLayout_2);
+        formLayout->setLayout(6, QFormLayout::SpanningRole, verticalLayout_2);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
@@ -219,17 +259,15 @@ public:
         horizontalLayout->addWidget(pushButtonRun);
 
 
-        formLayout->setLayout(5, QFormLayout::SpanningRole, horizontalLayout);
+        formLayout->setLayout(7, QFormLayout::SpanningRole, horizontalLayout);
 
 
         horizontalLayout_4->addLayout(formLayout);
 
         MainWindow->setCentralWidget(centralWidget);
-        customPlot->raise();
-        horizontalLayoutWidget_3->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 500, 21));
+        menuBar->setGeometry(QRect(0, 0, 500, 20));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -257,6 +295,12 @@ public:
         labelTrigg->setText(QApplication::translate("MainWindow", "       Trigger", 0));
         lineEditTrigg->setText(QApplication::translate("MainWindow", "1", 0));
         labelW->setText(QApplication::translate("MainWindow", "  Noise selection", 0));
+        labelFitStep->setText(QApplication::translate("MainWindow", "Fit step", 0));
+        lineEditFitStep->setText(QApplication::translate("MainWindow", "0.5", 0));
+        label_3->setText(QApplication::translate("MainWindow", "MinError", 0));
+        lineEditMinError->setText(QApplication::translate("MainWindow", "1e-3", 0));
+        labelNumOfSteps->setText(QApplication::translate("MainWindow", "Number of steps", 0));
+        lineEditNumOfSteps->setText(QApplication::translate("MainWindow", "1e2", 0));
         label->setText(QApplication::translate("MainWindow", "Number of cycles", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Ignore resonances with low SNR", 0));
         label_2->setText(QApplication::translate("MainWindow", "Min. SNR", 0));
