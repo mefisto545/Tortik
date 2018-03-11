@@ -25,6 +25,7 @@ public:
     int w;                                                              // half-wight of noise research area
     int cycleNum;                                                       // number of cycles in median parameters calculation
     FileData(const string &path, const string &freqName, const string &phaseName);// Конструктор с путём к файлу, названиями столбцов
+    double minSNR;
     int readRows();                                                                  // Чтение столбцов с названиями из row
     void writeRows(const string &path, const string *rowNames, const vector<double> *arrays, int size); //Запись столбцов в файл
     void writeFreqAndTheta();
@@ -46,7 +47,8 @@ struct Resonance
     double mse;
 };
 void level(vector <double> &x, vector <double> &y, double* k, double* y0, double trigg);
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct Resonance> *Stack);
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w,
+             bool SNRmatter, double minSNR, stack <struct Resonance> *Stack);
 double SNR(vector <double> &y, int a, int b, double median, double trigg, int w);
 
 #endif // FILEDATA_H

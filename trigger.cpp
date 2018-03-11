@@ -7,7 +7,8 @@ inline double median(double f,double k, double y0)
     return f*k + y0;
 }
 
-void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w, stack <struct Resonance> *Stack)
+void trigger(vector <double> &x, vector <double> &y, double k, double y0, double trigg, int w,
+             bool SNRmatter, double minSNR, stack <struct Resonance> *Stack)
 {
     int i=1;
     struct Resonance resonance;
@@ -45,7 +46,13 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
                     resonance.b = i + 1;
                 }
         resonance.snr = SNR(y, resonance.a, resonance.b, median(x[i], k, y0), trigg, w);
-        Stack->push(resonance);
+        if(SNRmatter == true)
+        {
+            if(resonance.snr > minSNR)
+                Stack->push(resonance);
+        }
+        else
+            Stack->push(resonance);
         }
 
         if(y[i] < median(x[i], k, y0) - trigg) //check for resonance
@@ -78,7 +85,13 @@ void trigger(vector <double> &x, vector <double> &y, double k, double y0, double
                     resonance.b = i + 1;
                 }
         resonance.snr = SNR(y, resonance.a, resonance.b, median(x[i], k, y0), trigg, w);
-        Stack->push(resonance);
+        if(SNRmatter == true)
+        {
+            if(resonance.snr > minSNR)
+                Stack->push(resonance);
+        }
+        else
+            Stack->push(resonance);
         }
         i++;
     }

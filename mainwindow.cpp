@@ -18,7 +18,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &vectory, stack<struct Resonance> fittedData)
+void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &vectory,
+                           stack<struct Resonance> fittedData, double k, double y0, double trigg)
 {
     // clear graphs data
     ui->customPlot->clearGraphs();
@@ -28,9 +29,22 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     QVector<double> x = QVector<double>::fromStdVector(vectorx);
     QVector<double> y = QVector<double>::fromStdVector(vectory);
     ui->customPlot->graph(0)->setData(x, y);
-
-    // create graphs that show finded resonances
-    int resNum = 1;
+    int size = vectorx.size();
+    // create graphs for linear approximation and 2 trigger lines
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(1)->setPen(QPen(Qt::green));
+    ui->customPlot->graph(1)->addData(vectorx[0], y0+k*vectorx[0]);
+    ui->customPlot->graph(1)->addData(vectorx[size-1], y0+k*vectorx[size-1]);
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(2)->setPen(QPen(Qt::gray));
+    ui->customPlot->graph(2)->addData(vectorx[0], trigg+y0+k*vectorx[0]);
+    ui->customPlot->graph(2)->addData(vectorx[size-1], trigg+y0+k*vectorx[size-1]);
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(3)->setPen(QPen(Qt::gray));
+    ui->customPlot->graph(3)->addData(vectorx[0], y0-trigg+k*vectorx[0]);
+    ui->customPlot->graph(3)->addData(vectorx[size-1], y0-trigg+k*vectorx[size-1]);
+    // create graphs that show found resonances
+    int resNum = 4;
     while(!fittedData.empty())
     {
         Resonance resonance = fittedData.top();
@@ -41,6 +55,11 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
         for (int k = resonance.a; k <= resonance.b; k++)
         {
             ui->customPlot->graph(resNum)->addData(vectorx[k], vectory[k]);
+        }
+        if(resonance.a == resonance.b)
+        {
+            ui->customPlot->graph(resNum)->addData(vectorx[resonance.a-1], vectory[resonance.a-1]);
+            ui->customPlot->graph(resNum)->addData(vectorx[resonance.a+1], vectory[resonance.a+1]);
         }
         resNum++;
         fittedData.pop();
@@ -80,9 +99,10 @@ void MainWindow::on_pushButtonRun_clicked()
     file.trigg = ui->lineEditTrigg->text().toDouble();
     file.w = ui->spinBoxW->value();
     file.cycleNum = ui->spinBoxCycleNum->value();
+    file.minSNR = ui->lineEditSNR->text().toDouble();
     for (int i=0;  i < file.cycleNum; i++)
         level(file.freqData, file.phaseData, &k, &y0, file.trigg);
-    trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, &st);
+    trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, ui->checkBox->isChecked(), file.minSNR, &st);
 
     int maxNumberOfSteps = 1e2; //less steps is better
     double minError = 0.001, step = 0.1;
@@ -90,6 +110,14 @@ void MainWindow::on_pushButtonRun_clicked()
     fitter.fitData(st);
 
     file.writeStackToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
-    MainWindow::showGraph(file.freqData, file.phaseData, fitter.fittedData);
+    MainWindow::showGraph(file.freqData, file.phaseData, fitter.fittedData, k, y0, file.trigg);
     QMessageBox::about(this, "Result", "Done");
+}
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    if(checked == true)
+        ui->lineEditSNR->setEnabled(true);
+    else
+        ui->lineEditSNR->setEnabled(false);
 }

@@ -55,5 +55,4 @@ void level(vector <double> &x, vector <double> &y, double* k, double* y0, double
         abort();
     *k = (size * sumxy  -  sumx * sumy) / denom;
     *y0 = (sumy * sumx2  -  sumx * sumxy) / denom;
-    cout << *k << "\t" << *y0 << endl;
 }
