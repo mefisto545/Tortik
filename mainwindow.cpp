@@ -120,3 +120,10 @@ void MainWindow::on_checkBox_clicked(bool checked)
     else
         ui->lineEditSNR->setEnabled(false);
 }
+
+void MainWindow::on_checkBoxEnableFitParams_clicked(bool checked)
+{
+        ui->lineEditFitStep->setEnabled(checked);
+        ui->lineEditMinError->setEnabled(checked);
+        ui->lineEditNumOfSteps->setEnabled(checked);
+}

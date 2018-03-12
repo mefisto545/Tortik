@@ -23,6 +23,8 @@ private slots:
     void on_pushButtonRun_clicked();
     void on_checkBox_clicked(bool checked);
 
+    void on_checkBoxEnableFitParams_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
 };

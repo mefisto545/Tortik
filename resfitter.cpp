@@ -138,18 +138,14 @@ void ResFitter::fitData(stack <struct Resonance> &stack)
 {
     while (ResFitter::readDataFromStack(stack))
     {
+        int numOfPoints = resonance.b - resonance.a + 1;
         findParams();
-        ResFitter::gradDescent(this->params, step);
-
-        /*Write fitting data to file*/
-        vector<double> params;
-        vector<double> lastError;
-        vector<double> numberOfSteps;
-        string names[] = {"Freq", "Theta", "Parameters(y0, yc, xc, width)", "MSE:", "NumberOfSteps"};
-
-        params.insert(params.begin() , this->params , this->params + 4);
-        lastError.push_back(errors.back());
-        numberOfSteps.push_back(errors.size());
+        if (numOfPoints > 4)
+            ResFitter::gradDescent(this->params, step); // if number of points in resonance > 4 make gradient descend method
+        else if (numOfPoints > 1)
+            errors.push_back(ResFitter::errorMSE(params)); // else just calculate the error
+        else
+            errors.push_back(-1.0);
 
         /*Write fitting data to vector fittedData*/
         Resonance fittedResonance;

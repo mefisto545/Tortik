@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
+    <width>550</width>
     <height>520</height>
    </rect>
   </property>
@@ -23,20 +23,20 @@
    <widget class="QCustomPlot" name="customPlot" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>250</y>
-      <width>461</width>
-      <height>231</height>
+      <x>10</x>
+      <y>210</y>
+      <width>531</width>
+      <height>271</height>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_3">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>10</x>
       <y>10</y>
-      <width>351</width>
-      <height>262</height>
+      <width>525</width>
+      <height>191</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -101,19 +101,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
      </item>
      <item>
@@ -153,58 +140,13 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="labelFitStep">
-         <property name="text">
-          <string>Fit step</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEditFitStep">
-         <property name="text">
-          <string>0.5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>MinError</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="lineEditMinError">
-         <property name="text">
-          <string>1e-3</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="labelNumOfSteps">
-         <property name="text">
-          <string>Number of steps</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="lineEditNumOfSteps">
-         <property name="text">
-          <string>1e2</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>Number of cycles</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="2" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QSpinBox" name="spinBoxCycleNum">
@@ -218,7 +160,7 @@
          </item>
         </layout>
        </item>
-       <item row="6" column="0" colspan="2">
+       <item row="3" column="0" colspan="2">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
           <number>6</number>
@@ -262,7 +204,7 @@
          </item>
         </layout>
        </item>
-       <item row="7" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QPushButton" name="pushButtonRun">
@@ -275,6 +217,71 @@
        </item>
       </layout>
      </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelFitStep">
+         <property name="text">
+          <string>Fit step</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineEditFitStep">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>MinError</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="lineEditMinError">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>1e-3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelNumOfSteps">
+         <property name="text">
+          <string>Number of steps</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="lineEditNumOfSteps">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>1e2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBoxEnableFitParams">
+         <property name="text">
+          <string>Change fit parameters</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -283,7 +290,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>500</width>
+     <width>550</width>
      <height>20</height>
     </rect>
    </property>
