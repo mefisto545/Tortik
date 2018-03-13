@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    MainWindow::setWindowTitle("ResFinder");
 }
 
 MainWindow::~MainWindow()
@@ -103,9 +104,21 @@ void MainWindow::on_pushButtonRun_clicked()
         level(file.freqData, file.phaseData, &k, &y0, file.trigg);
     trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, ui->checkBox->isChecked(), file.minSNR, &st);
 
-    int maxNumberOfSteps = ui->lineEditNumOfSteps->text().toDouble(); //less steps is better
-    double minError = ui->lineEditMinError->text().toDouble(), step = ui->lineEditFitStep->text().toDouble();
-    ResFitter fitter(maxNumberOfSteps, minError, step,&file, y0, k);
+    int maxNumberOfSteps;
+    double minError, step;
+    if (ui->checkBoxEnableFitParams->isChecked())
+    {
+        maxNumberOfSteps = ui->lineEditNumOfSteps->text().toDouble();
+        minError = ui->lineEditMinError->text().toDouble();
+        step = ui->lineEditFitStep->text().toDouble();
+    }
+    else
+    {
+        maxNumberOfSteps = DEF_MAX_STEPS;
+        minError = DEF_MIN_ERROR;
+        step = DEF_STEP;
+    }
+    ResFitter fitter(maxNumberOfSteps, minError, step, &file, y0, k);
     fitter.fitData(st);
 
     file.writeVectorToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
@@ -126,4 +139,18 @@ void MainWindow::on_checkBoxEnableFitParams_clicked(bool checked)
         ui->lineEditFitStep->setEnabled(checked);
         ui->lineEditMinError->setEnabled(checked);
         ui->lineEditNumOfSteps->setEnabled(checked);
+}
+
+void MainWindow::on_pushButtonImportFile_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File with Data"), "",
+            tr("Data Files (*.dat);; Text Files (*.txt)"));
+    ui->lineEditImport->setText(fileName);
+}
+
+void MainWindow::on_pushButtonExportFile_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
+        tr("Text Files (*.txt)"));
+    ui->lineEditExport->setText(fileName);
 }

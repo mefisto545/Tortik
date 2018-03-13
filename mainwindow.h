@@ -25,6 +25,10 @@ private slots:
 
     void on_checkBoxEnableFitParams_clicked(bool checked);
 
+    void on_pushButtonImportFile_clicked();
+
+    void on_pushButtonExportFile_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

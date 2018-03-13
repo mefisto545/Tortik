@@ -24,7 +24,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <qcustomplot.h>
@@ -37,16 +36,21 @@ public:
     QWidget *centralWidget;
     QCustomPlot *customPlot;
     QWidget *widget;
-    QHBoxLayout *horizontalLayout_4;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_6;
     QLabel *labelImport;
     QLineEdit *lineEditImport;
+    QPushButton *pushButtonImportFile;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *labelExportFileName;
+    QLineEdit *lineEditExport;
+    QPushButton *pushButtonExportFile;
+    QHBoxLayout *horizontalLayout_7;
     QLabel *labelFreq;
     QLineEdit *lineEditFreq;
     QLabel *labelPhase;
     QLineEdit *lineEditPhase;
-    QLabel *labelExportFileName;
-    QLineEdit *lineEditExport;
+    QHBoxLayout *horizontalLayout_4;
     QFormLayout *formLayout;
     QLabel *labelTrigg;
     QLineEdit *lineEditTrigg;
@@ -63,83 +67,126 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButtonRun;
     QFormLayout *formLayout_2;
+    QCheckBox *checkBoxEnableFitParams;
     QLabel *labelFitStep;
     QLineEdit *lineEditFitStep;
     QLabel *label_3;
     QLineEdit *lineEditMinError;
     QLabel *labelNumOfSteps;
     QLineEdit *lineEditNumOfSteps;
-    QCheckBox *checkBoxEnableFitParams;
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
     QStatusBar *statusBar;
+    QMenuBar *menuBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(550, 520);
-        MainWindow->setMinimumSize(QSize(500, 520));
+        MainWindow->resize(550, 603);
+        MainWindow->setMinimumSize(QSize(550, 520));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         customPlot = new QCustomPlot(centralWidget);
         customPlot->setObjectName(QStringLiteral("customPlot"));
-        customPlot->setGeometry(QRect(10, 210, 531, 271));
+        customPlot->setGeometry(QRect(10, 260, 531, 321));
         widget = new QWidget(centralWidget);
         widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(10, 10, 525, 191));
-        horizontalLayout_4 = new QHBoxLayout(widget);
-        horizontalLayout_4->setSpacing(6);
-        horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
-        verticalLayout = new QVBoxLayout();
-        verticalLayout->setSpacing(6);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
+        widget->setGeometry(QRect(10, 10, 527, 263));
+        verticalLayout_3 = new QVBoxLayout(widget);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setSpacing(0);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        horizontalLayout_6->setSizeConstraint(QLayout::SetMaximumSize);
         labelImport = new QLabel(widget);
         labelImport->setObjectName(QStringLiteral("labelImport"));
 
-        verticalLayout->addWidget(labelImport);
+        horizontalLayout_6->addWidget(labelImport);
 
         lineEditImport = new QLineEdit(widget);
         lineEditImport->setObjectName(QStringLiteral("lineEditImport"));
+        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(lineEditImport->sizePolicy().hasHeightForWidth());
+        lineEditImport->setSizePolicy(sizePolicy);
+        lineEditImport->setMinimumSize(QSize(420, 0));
+        lineEditImport->setSizeIncrement(QSize(10, 10));
 
-        verticalLayout->addWidget(lineEditImport);
+        horizontalLayout_6->addWidget(lineEditImport);
 
-        labelFreq = new QLabel(widget);
-        labelFreq->setObjectName(QStringLiteral("labelFreq"));
+        pushButtonImportFile = new QPushButton(widget);
+        pushButtonImportFile->setObjectName(QStringLiteral("pushButtonImportFile"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(21);
+        sizePolicy1.setVerticalStretch(21);
+        sizePolicy1.setHeightForWidth(pushButtonImportFile->sizePolicy().hasHeightForWidth());
+        pushButtonImportFile->setSizePolicy(sizePolicy1);
+        pushButtonImportFile->setMaximumSize(QSize(21, 21));
+        pushButtonImportFile->setBaseSize(QSize(0, 0));
 
-        verticalLayout->addWidget(labelFreq);
+        horizontalLayout_6->addWidget(pushButtonImportFile);
 
-        lineEditFreq = new QLineEdit(widget);
-        lineEditFreq->setObjectName(QStringLiteral("lineEditFreq"));
 
-        verticalLayout->addWidget(lineEditFreq);
+        verticalLayout_3->addLayout(horizontalLayout_6);
 
-        labelPhase = new QLabel(widget);
-        labelPhase->setObjectName(QStringLiteral("labelPhase"));
-
-        verticalLayout->addWidget(labelPhase);
-
-        lineEditPhase = new QLineEdit(widget);
-        lineEditPhase->setObjectName(QStringLiteral("lineEditPhase"));
-
-        verticalLayout->addWidget(lineEditPhase);
-
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(0);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         labelExportFileName = new QLabel(widget);
         labelExportFileName->setObjectName(QStringLiteral("labelExportFileName"));
 
-        verticalLayout->addWidget(labelExportFileName);
+        horizontalLayout_5->addWidget(labelExportFileName);
 
         lineEditExport = new QLineEdit(widget);
         lineEditExport->setObjectName(QStringLiteral("lineEditExport"));
 
-        verticalLayout->addWidget(lineEditExport);
+        horizontalLayout_5->addWidget(lineEditExport);
+
+        pushButtonExportFile = new QPushButton(widget);
+        pushButtonExportFile->setObjectName(QStringLiteral("pushButtonExportFile"));
+        pushButtonExportFile->setMinimumSize(QSize(21, 21));
+        pushButtonExportFile->setMaximumSize(QSize(21, 21));
+        pushButtonExportFile->setSizeIncrement(QSize(0, 0));
+
+        horizontalLayout_5->addWidget(pushButtonExportFile);
 
 
-        horizontalLayout_4->addLayout(verticalLayout);
+        verticalLayout_3->addLayout(horizontalLayout_5);
 
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        labelFreq = new QLabel(widget);
+        labelFreq->setObjectName(QStringLiteral("labelFreq"));
+
+        horizontalLayout_7->addWidget(labelFreq);
+
+        lineEditFreq = new QLineEdit(widget);
+        lineEditFreq->setObjectName(QStringLiteral("lineEditFreq"));
+        lineEditFreq->setMaximumSize(QSize(135, 16777215));
+
+        horizontalLayout_7->addWidget(lineEditFreq);
+
+        labelPhase = new QLabel(widget);
+        labelPhase->setObjectName(QStringLiteral("labelPhase"));
+
+        horizontalLayout_7->addWidget(labelPhase);
+
+        lineEditPhase = new QLineEdit(widget);
+        lineEditPhase->setObjectName(QStringLiteral("lineEditPhase"));
+        lineEditPhase->setMaximumSize(QSize(135, 16777215));
+
+        horizontalLayout_7->addWidget(lineEditPhase);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_7);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         formLayout = new QFormLayout();
         formLayout->setSpacing(6);
         formLayout->setObjectName(QStringLiteral("formLayout"));
@@ -177,7 +224,7 @@ public:
         spinBoxCycleNum = new QSpinBox(widget);
         spinBoxCycleNum->setObjectName(QStringLiteral("spinBoxCycleNum"));
         spinBoxCycleNum->setMinimum(1);
-        spinBoxCycleNum->setMaximum(10);
+        spinBoxCycleNum->setMaximum(25);
 
         horizontalLayout_2->addWidget(spinBoxCycleNum);
 
@@ -232,6 +279,11 @@ public:
         formLayout_2 = new QFormLayout();
         formLayout_2->setSpacing(6);
         formLayout_2->setObjectName(QStringLiteral("formLayout_2"));
+        checkBoxEnableFitParams = new QCheckBox(widget);
+        checkBoxEnableFitParams->setObjectName(QStringLiteral("checkBoxEnableFitParams"));
+
+        formLayout_2->setWidget(1, QFormLayout::SpanningRole, checkBoxEnableFitParams);
+
         labelFitStep = new QLabel(widget);
         labelFitStep->setObjectName(QStringLiteral("labelFitStep"));
         labelFitStep->setAlignment(Qt::AlignCenter);
@@ -266,25 +318,20 @@ public:
 
         formLayout_2->setWidget(4, QFormLayout::FieldRole, lineEditNumOfSteps);
 
-        checkBoxEnableFitParams = new QCheckBox(widget);
-        checkBoxEnableFitParams->setObjectName(QStringLiteral("checkBoxEnableFitParams"));
-
-        formLayout_2->setWidget(1, QFormLayout::SpanningRole, checkBoxEnableFitParams);
-
 
         horizontalLayout_4->addLayout(formLayout_2);
 
+
+        verticalLayout_3->addLayout(horizontalLayout_4);
+
         MainWindow->setCentralWidget(centralWidget);
+        statusBar = new QStatusBar(MainWindow);
+        statusBar->setObjectName(QStringLiteral("statusBar"));
+        MainWindow->setStatusBar(statusBar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 550, 20));
         MainWindow->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MainWindow);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
-        statusBar = new QStatusBar(MainWindow);
-        statusBar->setObjectName(QStringLiteral("statusBar"));
-        MainWindow->setStatusBar(statusBar);
 
         retranslateUi(MainWindow);
 
@@ -296,12 +343,14 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         labelImport->setText(QApplication::translate("MainWindow", "Import file name", 0));
         lineEditImport->setText(QApplication::translate("MainWindow", "WH.dat", 0));
+        pushButtonImportFile->setText(QApplication::translate("MainWindow", "...", 0));
+        labelExportFileName->setText(QApplication::translate("MainWindow", "Export File Name", 0));
+        lineEditExport->setText(QApplication::translate("MainWindow", "FitedData.txt", 0));
+        pushButtonExportFile->setText(QApplication::translate("MainWindow", "...", 0));
         labelFreq->setText(QApplication::translate("MainWindow", "Frequency column name", 0));
         lineEditFreq->setText(QApplication::translate("MainWindow", "Fgen", 0));
         labelPhase->setText(QApplication::translate("MainWindow", "Phase column name", 0));
         lineEditPhase->setText(QApplication::translate("MainWindow", "Theta", 0));
-        labelExportFileName->setText(QApplication::translate("MainWindow", "Export File Name", 0));
-        lineEditExport->setText(QApplication::translate("MainWindow", "FitedData.txt", 0));
         labelTrigg->setText(QApplication::translate("MainWindow", "       Trigger", 0));
         lineEditTrigg->setText(QApplication::translate("MainWindow", "1", 0));
         labelW->setText(QApplication::translate("MainWindow", "  Noise selection", 0));
@@ -310,13 +359,13 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "Min. SNR", 0));
         lineEditSNR->setText(QApplication::translate("MainWindow", "10", 0));
         pushButtonRun->setText(QApplication::translate("MainWindow", "Run", 0));
+        checkBoxEnableFitParams->setText(QApplication::translate("MainWindow", "Change fit parameters", 0));
         labelFitStep->setText(QApplication::translate("MainWindow", "Fit step", 0));
         lineEditFitStep->setText(QApplication::translate("MainWindow", "0.5", 0));
         label_3->setText(QApplication::translate("MainWindow", "MinError", 0));
         lineEditMinError->setText(QApplication::translate("MainWindow", "1e-3", 0));
         labelNumOfSteps->setText(QApplication::translate("MainWindow", "Number of steps", 0));
         lineEditNumOfSteps->setText(QApplication::translate("MainWindow", "1e2", 0));
-        checkBoxEnableFitParams->setText(QApplication::translate("MainWindow", "Change fit parameters", 0));
     } // retranslateUi
 
 };

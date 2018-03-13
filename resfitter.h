@@ -1,6 +1,10 @@
 #ifndef RESFITTER_H
 #define RESFITTER_H
 
+#define DEF_MAX_STEPS 1e2;
+#define DEF_MIN_ERROR 1e-3;
+#define DEF_STEP 0.5;
+
 #include <vector>
 #include "filedata.h"
 #include <math.h>
