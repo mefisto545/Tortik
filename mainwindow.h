@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <vector>
 #include <stack>
+#include "resfitter.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void showGraph(const std::vector<double> &vectorx, const std::vector<double> &vectory,
                    std::vector<struct Resonance> fittedData, double k, double y0, double trigg);
+    stack <struct Resonance> st;
+    FileData *file;
+    ResFitter *fitter;
     ~MainWindow();
 
 private slots:
@@ -28,6 +32,11 @@ private slots:
     void on_pushButtonImportFile_clicked();
 
     void on_pushButtonExportFile_clicked();
+
+    void slotMousePress(QMouseEvent *event);
+    void on_pushButton_clicked();
+
+    void on_pushButtonSave_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -30,7 +30,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -318,7 +318,7 @@
          <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="checkBoxEnableFitParams">
            <property name="text">
-            <string>Change fit parameters</string>
+            <string>Use custom fit parameters</string>
            </property>
           </widget>
          </item>
@@ -376,6 +376,26 @@
            </property>
           </widget>
          </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Resonance frequency</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="lineEditRf"/>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QPushButton" name="pushButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Save data</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -390,7 +410,7 @@
      <x>0</x>
      <y>0</y>
      <width>550</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

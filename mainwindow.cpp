@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filedata.h"
-#include "resfitter.h"
 #include <QApplication>
 #include <iostream>
 #include <QMessageBox>
@@ -12,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     MainWindow::setWindowTitle("ResFinder");
+    connect(ui->customPlot, &QCustomPlot::mousePress, this, &MainWindow::slotMousePress);
 }
 
 MainWindow::~MainWindow()
@@ -76,13 +76,15 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
 
 void MainWindow::on_pushButtonRun_clicked()
 {
+    while(!st.empty())
+    {
+        st.pop();
+    }
     string ImportFileName = ui->lineEditImport->text().toStdString();
     string FreqColumnName = ui->lineEditFreq->text().toStdString();
     string PhaseColumnName = ui->lineEditPhase->text().toStdString();
-    string ExportFileName = ui->lineEditExport->text().toStdString();
-
-    FileData file(ImportFileName,FreqColumnName, PhaseColumnName); //Example of creating file class
-    switch(file.readRows()) //Reading two rows from file
+    file = new FileData(ImportFileName,FreqColumnName, PhaseColumnName); //Example of creating file class
+    switch(file->readRows()) //Reading two rows from file
     {
         case 1:
             QMessageBox::about(this, "Error", "File is empty or doesn't exist");
@@ -95,14 +97,13 @@ void MainWindow::on_pushButtonRun_clicked()
             return;
     }
     double k = 0, y0 = 0;
-    stack <struct Resonance> st;
-    file.trigg = ui->lineEditTrigg->text().toDouble();
-    file.w = ui->spinBoxW->value();
-    file.cycleNum = ui->spinBoxCycleNum->value();
-    file.minSNR = ui->lineEditSNR->text().toDouble();
-    for (int i=0;  i < file.cycleNum; i++)
-        level(file.freqData, file.phaseData, &k, &y0, file.trigg);
-    trigger(file.freqData, file.phaseData, k, y0, file.trigg, file.w, ui->checkBox->isChecked(), file.minSNR, &st);
+    file->trigg = ui->lineEditTrigg->text().toDouble();
+    file->w = ui->spinBoxW->value();
+    file->cycleNum = ui->spinBoxCycleNum->value();
+    file->minSNR = ui->lineEditSNR->text().toDouble();
+    for (int i=0;  i < file->cycleNum; i++)
+        level(file->freqData, file->phaseData, &k, &y0, file->trigg);
+    trigger(file->freqData, file->phaseData, k, y0, file->trigg, file->w, ui->checkBox->isChecked(), file->minSNR, &st);
 
     int maxNumberOfSteps;
     double minError, step;
@@ -118,20 +119,22 @@ void MainWindow::on_pushButtonRun_clicked()
         minError = DEF_MIN_ERROR;
         step = DEF_STEP;
     }
-    ResFitter fitter(maxNumberOfSteps, minError, step, &file, y0, k);
-    fitter.fitData(st);
+    fitter = new ResFitter(maxNumberOfSteps, minError, step, file, y0, k);
+    fitter->fitData(st);
 
-    file.writeVectorToFile(ExportFileName, fitter.fittedData); // Write data of fitted resonances (with fit parameters) in txt file
-    MainWindow::showGraph(file.freqData, file.phaseData, fitter.fittedData, k, y0, file.trigg);
-    QMessageBox::about(this, "Result", "Done");
+    MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData, k, y0, file->trigg);
+    QString N = QString::number(fitter->fittedData.size());
+    QMessageBox::about(this, "Done", "Found " + N + " resonances   ");
+    for(unsigned int i=0; i < fitter->fittedData.size(); i++)
+    {
+        st.push(fitter->fittedData[i]);
+    }
+    ui->pushButton->setEnabled(true);
 }
 
 void MainWindow::on_checkBox_clicked(bool checked)
 {
-    if(checked == true)
-        ui->lineEditSNR->setEnabled(true);
-    else
-        ui->lineEditSNR->setEnabled(false);
+        ui->lineEditSNR->setEnabled(checked);
 }
 
 void MainWindow::on_checkBoxEnableFitParams_clicked(bool checked)
@@ -153,4 +156,39 @@ void MainWindow::on_pushButtonExportFile_clicked()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
         tr("Text Files (*.txt)"));
     ui->lineEditExport->setText(fileName);
+}
+
+double resFreq(double f, stack <Resonance> st, vector <double> &x)
+{
+    while(!st.empty())
+    {
+        if(x[st.top().a] <= f && f <= x[st.top().b])
+            return st.top().xc;
+        st.pop();
+    }
+    return -1;
+}
+
+void MainWindow::slotMousePress(QMouseEvent *event)
+{
+    double coordX = ui->customPlot->xAxis->pixelToCoord(event->pos().x());
+    double xc = resFreq(coordX, st, file->freqData);
+    if(!st.empty())
+    {
+        if(xc >= 0)
+        {
+            QString str = QString::number(xc);
+            ui->lineEditRf->setText(str);
+        }
+        else
+            ui->lineEditRf->setText("");
+    }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    string ExportFileName = ui->lineEditExport->text().toStdString();
+    file->writeVectorToFile(ExportFileName, fitter->fittedData); // Write data of fitted resonances (with fit parameters) in txt file
+    QMessageBox::about(this, "Done", "Saved");
 }
