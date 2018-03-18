@@ -36,7 +36,7 @@ private slots:
     void slotMousePress(QMouseEvent *event);
     void on_pushButton_clicked();
 
-    void on_pushButtonSave_clicked();
+    void on_checkBoxLine_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

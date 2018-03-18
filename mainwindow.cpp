@@ -65,8 +65,8 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
         resNum++;
     }
     // give the axes appropriate labels:
-    ui->customPlot->xAxis->setLabel("Freq");
-    ui->customPlot->yAxis->setLabel("Theta");
+    ui->customPlot->xAxis->setLabel("Frequency");
+    ui->customPlot->yAxis->setLabel("Phase");
 
     // set axes ranges, so we see all data:
     ui->customPlot->graph(0)->rescaleAxes();
@@ -101,8 +101,19 @@ void MainWindow::on_pushButtonRun_clicked()
     file->w = ui->spinBoxW->value();
     file->cycleNum = ui->spinBoxCycleNum->value();
     file->minSNR = ui->lineEditSNR->text().toDouble();
-    for (int i=0;  i < file->cycleNum; i++)
-        level(file->freqData, file->phaseData, &k, &y0, file->trigg);
+    if(ui->checkBoxLine->isChecked())
+    {
+        k = ui->lineEditSlope->text().toDouble();
+        y0 = ui->lineEditInter->text().toDouble();
+    }
+    else
+    {
+        for (int i=0;  i < file->cycleNum; i++)
+            level(file->freqData, file->phaseData, &k, &y0, file->trigg);
+        ui->lineEditSlope->setText(QString::number(k));
+        ui->lineEditInter->setText(QString::number(y0));
+    }
+
     trigger(file->freqData, file->phaseData, k, y0, file->trigg, file->w, ui->checkBox->isChecked(), file->minSNR, &st);
 
     int maxNumberOfSteps;
@@ -137,6 +148,12 @@ void MainWindow::on_checkBox_clicked(bool checked)
         ui->lineEditSNR->setEnabled(checked);
 }
 
+void MainWindow::on_checkBoxLine_clicked(bool checked)
+{
+        ui->lineEditSlope->setEnabled(checked);
+        ui->lineEditInter->setEnabled(checked);
+}
+
 void MainWindow::on_checkBoxEnableFitParams_clicked(bool checked)
 {
         ui->lineEditFitStep->setEnabled(checked);
@@ -160,8 +177,15 @@ void MainWindow::on_pushButtonExportFile_clicked()
 
 double resFreq(double f, stack <Resonance> st, vector <double> &x)
 {
+    double h;
     while(!st.empty())
     {
+        if(st.top().a == st.top().b)
+        {
+            h = (x[st.top().a] - x[st.top().a - 1]) / 2.;
+            if (x[st.top().a] - h <= f && f <= x[st.top().a] + h)
+                return st.top().xc;
+        }
         if(x[st.top().a] <= f && f <= x[st.top().b])
             return st.top().xc;
         st.pop();

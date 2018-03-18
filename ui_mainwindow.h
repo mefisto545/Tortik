@@ -66,6 +66,9 @@ public:
     QLineEdit *lineEditSNR;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButtonRun;
+    QPushButton *pushButton;
+    QLabel *label_4;
+    QLineEdit *lineEditRf;
     QFormLayout *formLayout_2;
     QCheckBox *checkBoxEnableFitParams;
     QLabel *labelFitStep;
@@ -74,9 +77,11 @@ public:
     QLineEdit *lineEditMinError;
     QLabel *labelNumOfSteps;
     QLineEdit *lineEditNumOfSteps;
-    QLabel *label_4;
-    QLineEdit *lineEditRf;
-    QPushButton *pushButton;
+    QLabel *label_5;
+    QLineEdit *lineEditSlope;
+    QLabel *label_6;
+    QLineEdit *lineEditInter;
+    QCheckBox *checkBoxLine;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
 
@@ -84,16 +89,16 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(550, 603);
+        MainWindow->resize(550, 631);
         MainWindow->setMinimumSize(QSize(550, 520));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         customPlot = new QCustomPlot(centralWidget);
         customPlot->setObjectName(QStringLiteral("customPlot"));
-        customPlot->setGeometry(QRect(10, 260, 531, 321));
+        customPlot->setGeometry(QRect(10, 300, 531, 311));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 10, 527, 263));
+        layoutWidget->setGeometry(QRect(10, 10, 527, 305));
         verticalLayout_3 = new QVBoxLayout(layoutWidget);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -274,7 +279,23 @@ public:
         horizontalLayout->addWidget(pushButtonRun);
 
 
-        formLayout->setLayout(4, QFormLayout::SpanningRole, horizontalLayout);
+        formLayout->setLayout(5, QFormLayout::SpanningRole, horizontalLayout);
+
+        pushButton = new QPushButton(layoutWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setEnabled(false);
+
+        formLayout->setWidget(6, QFormLayout::SpanningRole, pushButton);
+
+        label_4 = new QLabel(layoutWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, label_4);
+
+        lineEditRf = new QLineEdit(layoutWidget);
+        lineEditRf->setObjectName(QStringLiteral("lineEditRf"));
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, lineEditRf);
 
 
         horizontalLayout_4->addLayout(formLayout);
@@ -321,21 +342,32 @@ public:
 
         formLayout_2->setWidget(4, QFormLayout::FieldRole, lineEditNumOfSteps);
 
-        label_4 = new QLabel(layoutWidget);
-        label_4->setObjectName(QStringLiteral("label_4"));
+        label_5 = new QLabel(layoutWidget);
+        label_5->setObjectName(QStringLiteral("label_5"));
 
-        formLayout_2->setWidget(5, QFormLayout::LabelRole, label_4);
+        formLayout_2->setWidget(6, QFormLayout::LabelRole, label_5);
 
-        lineEditRf = new QLineEdit(layoutWidget);
-        lineEditRf->setObjectName(QStringLiteral("lineEditRf"));
+        lineEditSlope = new QLineEdit(layoutWidget);
+        lineEditSlope->setObjectName(QStringLiteral("lineEditSlope"));
+        lineEditSlope->setEnabled(false);
 
-        formLayout_2->setWidget(5, QFormLayout::FieldRole, lineEditRf);
+        formLayout_2->setWidget(6, QFormLayout::FieldRole, lineEditSlope);
 
-        pushButton = new QPushButton(layoutWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setEnabled(false);
+        label_6 = new QLabel(layoutWidget);
+        label_6->setObjectName(QStringLiteral("label_6"));
 
-        formLayout_2->setWidget(6, QFormLayout::SpanningRole, pushButton);
+        formLayout_2->setWidget(7, QFormLayout::LabelRole, label_6);
+
+        lineEditInter = new QLineEdit(layoutWidget);
+        lineEditInter->setObjectName(QStringLiteral("lineEditInter"));
+        lineEditInter->setEnabled(false);
+
+        formLayout_2->setWidget(7, QFormLayout::FieldRole, lineEditInter);
+
+        checkBoxLine = new QCheckBox(layoutWidget);
+        checkBoxLine->setObjectName(QStringLiteral("checkBoxLine"));
+
+        formLayout_2->setWidget(5, QFormLayout::SpanningRole, checkBoxLine);
 
 
         horizontalLayout_4->addLayout(formLayout_2);
@@ -360,10 +392,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        labelImport->setText(QApplication::translate("MainWindow", "Import file name", 0));
+        labelImport->setText(QApplication::translate("MainWindow", "Import file name ", 0));
         lineEditImport->setText(QApplication::translate("MainWindow", "WH.dat", 0));
         pushButtonImportFile->setText(QApplication::translate("MainWindow", "...", 0));
-        labelExportFileName->setText(QApplication::translate("MainWindow", "Export File Name", 0));
+        labelExportFileName->setText(QApplication::translate("MainWindow", "Export file name ", 0));
         lineEditExport->setText(QApplication::translate("MainWindow", "FitedData.txt", 0));
         pushButtonExportFile->setText(QApplication::translate("MainWindow", "...", 0));
         labelFreq->setText(QApplication::translate("MainWindow", "Frequency column name", 0));
@@ -378,6 +410,8 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "Min. SNR", 0));
         lineEditSNR->setText(QApplication::translate("MainWindow", "10", 0));
         pushButtonRun->setText(QApplication::translate("MainWindow", "Run", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "Save data", 0));
+        label_4->setText(QApplication::translate("MainWindow", "Resonance frequency", 0));
         checkBoxEnableFitParams->setText(QApplication::translate("MainWindow", "Use custom fit parameters", 0));
         labelFitStep->setText(QApplication::translate("MainWindow", "Fit step", 0));
         lineEditFitStep->setText(QApplication::translate("MainWindow", "0.5", 0));
@@ -385,8 +419,9 @@ public:
         lineEditMinError->setText(QApplication::translate("MainWindow", "1e-3", 0));
         labelNumOfSteps->setText(QApplication::translate("MainWindow", "Number of steps", 0));
         lineEditNumOfSteps->setText(QApplication::translate("MainWindow", "1e2", 0));
-        label_4->setText(QApplication::translate("MainWindow", "Resonance frequency", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "Save data", 0));
+        label_5->setText(QApplication::translate("MainWindow", "Slope", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Interception", 0));
+        checkBoxLine->setText(QApplication::translate("MainWindow", "Use custom median line parameters", 0));
     } // retranslateUi
 
 };
