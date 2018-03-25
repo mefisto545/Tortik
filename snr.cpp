@@ -15,7 +15,7 @@ double SNR(vector <double> &y, int a, int b, double median, double trigg, int w)
         }
     //calculation of noise's zero-mean on the left
     for(int i = a - w; i < a; i++)
-        if(y[i] < median + trigg && y[i] > median - trigg && i > 0)
+        if(i > 0 && y[i] < median + trigg && y[i] > median - trigg)
         {
             sig2w += (y[i] - median)*(y[i] - median);
             nw++;

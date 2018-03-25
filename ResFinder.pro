@@ -19,11 +19,13 @@ SOURCES += main.cpp\
     trigger.cpp \
     resfitter.cpp \
     snr.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    als.cpp
 
 HEADERS  += mainwindow.h \
     filedata.h \
     resfitter.h \
-    qcustomplot.h
+    qcustomplot.h \
+    als.h
 
 FORMS    += mainwindow.ui

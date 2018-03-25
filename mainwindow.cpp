@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <iostream>
 #include <QMessageBox>
+#include "als.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,6 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     MainWindow::setWindowTitle("ResFinder");
     connect(ui->customPlot, &QCustomPlot::mousePress, this, &MainWindow::slotMousePress);
+    QStringList List;
+    List.push_back("Use straight baseline");
+    List.push_back("Use curve baseline");
+    ui->comboBox->addItems(List);
+    List.clear();
 }
 
 MainWindow::~MainWindow()
@@ -20,7 +26,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &vectory,
-                           vector<struct Resonance> fittedData, double k, double y0, double trigg)
+                           vector<struct Resonance> fittedData)
 {
     // clear graphs data
     ui->customPlot->clearGraphs();
@@ -30,23 +36,13 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     QVector<double> x = QVector<double>::fromStdVector(vectorx);
     QVector<double> y = QVector<double>::fromStdVector(vectory);
     ui->customPlot->graph(0)->setData(x, y);
-    int size = vectorx.size();
-    // create graphs for linear approximation and 2 trigger lines
+    // create graphs for baseline and 2 trigger lines
     ui->customPlot->addGraph();
-    ui->customPlot->graph(1)->setPen(QPen(Qt::green));
-    ui->customPlot->graph(1)->addData(vectorx[0], y0+k*vectorx[0]);
-    ui->customPlot->graph(1)->addData(vectorx[size-1], y0+k*vectorx[size-1]);
     ui->customPlot->addGraph();
-    ui->customPlot->graph(2)->setPen(QPen(Qt::gray));
-    ui->customPlot->graph(2)->addData(vectorx[0], trigg+y0+k*vectorx[0]);
-    ui->customPlot->graph(2)->addData(vectorx[size-1], trigg+y0+k*vectorx[size-1]);
     ui->customPlot->addGraph();
-    ui->customPlot->graph(3)->setPen(QPen(Qt::gray));
-    ui->customPlot->graph(3)->addData(vectorx[0], y0-trigg+k*vectorx[0]);
-    ui->customPlot->graph(3)->addData(vectorx[size-1], y0-trigg+k*vectorx[size-1]);
     // create graphs that show found resonances
-    int resNum = 4, numOfRes = fittedData.size();
-    for(int i = 0; i < numOfRes; i++)
+    //int resNum = 4, numOfRes = fittedData.size();
+   /* for(int i = 0; i < numOfRes; i++)
     {
         Resonance resonance = fittedData[i];
 
@@ -63,7 +59,7 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
             ui->customPlot->graph(resNum)->addData(vectorx[resonance.a+1], vectory[resonance.a+1]);
         }
         resNum++;
-    }
+    }*/
     // give the axes appropriate labels:
     ui->customPlot->xAxis->setLabel("Frequency");
     ui->customPlot->yAxis->setLabel("Phase");
@@ -71,6 +67,35 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     // set axes ranges, so we see all data:
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    ui->customPlot->replot();
+}
+void MainWindow::showGraphTemp(const vector<double> &vectorx,const vector <double> &baseline, bool straight, double trigg)
+{
+    int size = vectorx.size();
+    if(straight)
+    {
+        ui->customPlot->graph(1)->setPen(QPen(Qt::green));
+        ui->customPlot->graph(1)->addData(vectorx[0],baseline[0]);
+        ui->customPlot->graph(1)->addData(vectorx[size-1], baseline[size-1]);
+        ui->customPlot->graph(2)->setPen(QPen(Qt::gray));
+        ui->customPlot->graph(2)->addData(vectorx[0], trigg+baseline[0]);
+        ui->customPlot->graph(2)->addData(vectorx[size-1], trigg+baseline[size-1]);
+        ui->customPlot->graph(3)->setPen(QPen(Qt::gray));
+        ui->customPlot->graph(3)->addData(vectorx[0], -trigg+baseline[0]);
+        ui->customPlot->graph(3)->addData(vectorx[size-1], -trigg+baseline[size-1]);
+    }
+    else
+    {
+        ui->customPlot->graph(1)->setPen(QPen(Qt::green));
+        ui->customPlot->graph(1)->setData(QVector<double>::fromStdVector(vectorx), QVector<double>::fromStdVector(baseline));
+        ui->customPlot->graph(2)->setPen(QPen(Qt::gray));
+        ui->customPlot->graph(3)->setPen(QPen(Qt::gray));
+        for(int i = 0; i < size; i++)
+        {
+            ui->customPlot->graph(2)->addData(vectorx[i], trigg+baseline[i]);
+            ui->customPlot->graph(3)->addData(vectorx[i], -trigg+baseline[i]);
+        }
+    }
     ui->customPlot->replot();
 }
 
@@ -96,25 +121,36 @@ void MainWindow::on_pushButtonRun_clicked()
             QMessageBox::about(this, "Error", "Cannot find phase column");
             return;
     }
-    double k = 0, y0 = 0;
+    double k = 0, y0 = 110;
     file->trigg = ui->lineEditTrigg->text().toDouble();
     file->w = ui->spinBoxW->value();
     file->cycleNum = ui->spinBoxCycleNum->value();
     file->minSNR = ui->lineEditSNR->text().toDouble();
-    if(ui->checkBoxLine->isChecked())
+    double p = ui->lineEditP->text().toDouble();
+    double smooth = ui->lineEditSmooth->text().toDouble();
+    baseline = file->phaseData;
+    if (ui->comboBox->currentText() == "Use straight baseline")
     {
-        k = ui->lineEditSlope->text().toDouble();
-        y0 = ui->lineEditInter->text().toDouble();
+        if(ui->checkBoxLine->isChecked())
+        {
+            k = ui->lineEditSlope->text().toDouble();
+            y0 = ui->lineEditInter->text().toDouble();
+        }
+        else
+        {
+            for (int i=0;  i < file->cycleNum; i++)
+                level(file->freqData, file->phaseData, &k, &y0, file->trigg);
+            ui->lineEditSlope->setText(QString::number(k));
+            ui->lineEditInter->setText(QString::number(y0));
+        }
+        for(unsigned int i = 0; i < baseline.size(); i++)
+            baseline[i] = median(file->freqData[i], k, y0);
     }
     else
     {
-        for (int i=0;  i < file->cycleNum; i++)
-            level(file->freqData, file->phaseData, &k, &y0, file->trigg);
-        ui->lineEditSlope->setText(QString::number(k));
-        ui->lineEditInter->setText(QString::number(y0));
+        mainals(baseline, p, smooth, file->cycleNum);
     }
-
-    trigger(file->freqData, file->phaseData, k, y0, file->trigg, file->w, ui->checkBox->isChecked(), file->minSNR, &st);
+    trigger(file->freqData, file->phaseData, baseline, file->trigg, file->w, ui->checkBox->isChecked(), file->minSNR, &st);
 
     int maxNumberOfSteps;
     double minError, step;
@@ -131,15 +167,17 @@ void MainWindow::on_pushButtonRun_clicked()
         step = DEF_STEP;
     }
     fitter = new ResFitter(maxNumberOfSteps, minError, step, file, y0, k);
-    fitter->fitData(st);
+    //fitter->fitData(st);
 
-    MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData, k, y0, file->trigg);
-    QString N = QString::number(fitter->fittedData.size());
-    QMessageBox::about(this, "Done", "Found " + N + " resonances   ");
-    for(unsigned int i=0; i < fitter->fittedData.size(); i++)
-    {
-        st.push(fitter->fittedData[i]);
-    }
+    MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData);
+    MainWindow::showGraphTemp(file->freqData, baseline, ui->comboBox->currentText() == "Use straight baseline",
+                              file->trigg);
+    QMessageBox::about(this, "Done", "Found  resonances   ");
+    //QString::number(fitter->fittedData.size())
+    //for(unsigned int i=0; i < fitter->fittedData.size(); i++)
+    //{
+    //    st.push(fitter->fittedData[i]);
+    //}
     ui->pushButton->setEnabled(true);
 }
 

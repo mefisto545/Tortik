@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -82,6 +83,11 @@ public:
     QLabel *label_6;
     QLineEdit *lineEditInter;
     QCheckBox *checkBoxLine;
+    QComboBox *comboBox;
+    QLabel *label_7;
+    QLineEdit *lineEditP;
+    QLabel *label_8;
+    QLineEdit *lineEditSmooth;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
 
@@ -89,16 +95,16 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(550, 631);
+        MainWindow->resize(550, 716);
         MainWindow->setMinimumSize(QSize(550, 520));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         customPlot = new QCustomPlot(centralWidget);
         customPlot->setObjectName(QStringLiteral("customPlot"));
-        customPlot->setGeometry(QRect(10, 300, 531, 311));
+        customPlot->setGeometry(QRect(10, 350, 531, 341));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 10, 527, 305));
+        layoutWidget->setGeometry(QRect(10, 10, 527, 346));
         verticalLayout_3 = new QVBoxLayout(layoutWidget);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -345,29 +351,54 @@ public:
         label_5 = new QLabel(layoutWidget);
         label_5->setObjectName(QStringLiteral("label_5"));
 
-        formLayout_2->setWidget(6, QFormLayout::LabelRole, label_5);
+        formLayout_2->setWidget(9, QFormLayout::LabelRole, label_5);
 
         lineEditSlope = new QLineEdit(layoutWidget);
         lineEditSlope->setObjectName(QStringLiteral("lineEditSlope"));
         lineEditSlope->setEnabled(false);
 
-        formLayout_2->setWidget(6, QFormLayout::FieldRole, lineEditSlope);
+        formLayout_2->setWidget(9, QFormLayout::FieldRole, lineEditSlope);
 
         label_6 = new QLabel(layoutWidget);
         label_6->setObjectName(QStringLiteral("label_6"));
 
-        formLayout_2->setWidget(7, QFormLayout::LabelRole, label_6);
+        formLayout_2->setWidget(10, QFormLayout::LabelRole, label_6);
 
         lineEditInter = new QLineEdit(layoutWidget);
         lineEditInter->setObjectName(QStringLiteral("lineEditInter"));
         lineEditInter->setEnabled(false);
 
-        formLayout_2->setWidget(7, QFormLayout::FieldRole, lineEditInter);
+        formLayout_2->setWidget(10, QFormLayout::FieldRole, lineEditInter);
 
         checkBoxLine = new QCheckBox(layoutWidget);
         checkBoxLine->setObjectName(QStringLiteral("checkBoxLine"));
 
-        formLayout_2->setWidget(5, QFormLayout::SpanningRole, checkBoxLine);
+        formLayout_2->setWidget(8, QFormLayout::SpanningRole, checkBoxLine);
+
+        comboBox = new QComboBox(layoutWidget);
+        comboBox->setObjectName(QStringLiteral("comboBox"));
+
+        formLayout_2->setWidget(7, QFormLayout::SpanningRole, comboBox);
+
+        label_7 = new QLabel(layoutWidget);
+        label_7->setObjectName(QStringLiteral("label_7"));
+
+        formLayout_2->setWidget(5, QFormLayout::LabelRole, label_7);
+
+        lineEditP = new QLineEdit(layoutWidget);
+        lineEditP->setObjectName(QStringLiteral("lineEditP"));
+
+        formLayout_2->setWidget(5, QFormLayout::FieldRole, lineEditP);
+
+        label_8 = new QLabel(layoutWidget);
+        label_8->setObjectName(QStringLiteral("label_8"));
+
+        formLayout_2->setWidget(6, QFormLayout::LabelRole, label_8);
+
+        lineEditSmooth = new QLineEdit(layoutWidget);
+        lineEditSmooth->setObjectName(QStringLiteral("lineEditSmooth"));
+
+        formLayout_2->setWidget(6, QFormLayout::FieldRole, lineEditSmooth);
 
 
         horizontalLayout_4->addLayout(formLayout_2);
@@ -416,12 +447,17 @@ public:
         labelFitStep->setText(QApplication::translate("MainWindow", "Fit step", 0));
         lineEditFitStep->setText(QApplication::translate("MainWindow", "0.5", 0));
         label_3->setText(QApplication::translate("MainWindow", "MinError", 0));
-        lineEditMinError->setText(QApplication::translate("MainWindow", "1e-3", 0));
+        lineEditMinError->setText(QApplication::translate("MainWindow", "1E-3", 0));
         labelNumOfSteps->setText(QApplication::translate("MainWindow", "Number of steps", 0));
-        lineEditNumOfSteps->setText(QApplication::translate("MainWindow", "1e2", 0));
+        lineEditNumOfSteps->setText(QApplication::translate("MainWindow", "1E2", 0));
         label_5->setText(QApplication::translate("MainWindow", "Slope", 0));
         label_6->setText(QApplication::translate("MainWindow", "Interception", 0));
-        checkBoxLine->setText(QApplication::translate("MainWindow", "Use custom median line parameters", 0));
+        checkBoxLine->setText(QApplication::translate("MainWindow", "Use custom straight line parameters", 0));
+        comboBox->setCurrentText(QString());
+        label_7->setText(QApplication::translate("MainWindow", "p-parameter", 0));
+        lineEditP->setText(QApplication::translate("MainWindow", "0.3", 0));
+        label_8->setText(QApplication::translate("MainWindow", "Smoothness", 0));
+        lineEditSmooth->setText(QApplication::translate("MainWindow", "1E7", 0));
     } // retranslateUi
 
 };
