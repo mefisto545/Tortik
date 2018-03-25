@@ -1,13 +1,11 @@
 #include "resfitter.h"
 
-ResFitter::ResFitter(double maxSteps, double minError, double step, FileData* file, double y0, double k)
+ResFitter::ResFitter(double maxSteps, double minError, double step, FileData* file)
 {
     this->maxSteps = maxSteps;
     this->minError = minError;
     this->file = file;
     this->step = step;
-    this->k = k;
-    this->y0 = y0;
 }
 
 double ResFitter::lorentz(double x, double y0, double yc, double xc, double w)
@@ -119,7 +117,7 @@ bool ResFitter::readDataFromStack(stack <struct Resonance> &st)
     return true;
 }
 
-void ResFitter::findParams()
+void ResFitter::findParams(double y0)
 {
     double sum = 0;
     int min = 0, i = 0, size = theta.size();
@@ -128,18 +126,18 @@ void ResFitter::findParams()
         sum += freq[i];
         if (theta[i] < theta[min]) min = i;
     }
-    params[0] = y0 + freq[min] * k;
+    params[0] = y0;
     params[1]= theta[min];
     params[2]= freq[min];
     params[3]= (freq.back() - freq[0]) / 2.0;
 }
 
-void ResFitter::fitData(stack <struct Resonance> &stack)
+void ResFitter::fitData(stack <struct Resonance> &stack, const vector<double> &baseline)
 {
     while (ResFitter::readDataFromStack(stack))
     {
         int numOfPoints = resonance.b - resonance.a + 1;
-        findParams();
+        findParams(baseline[resonance.b]);
         if (numOfPoints > 4)
             ResFitter::gradDescent(this->params, step); // if number of points in resonance > 4 make gradient descend method
         else if (numOfPoints > 1)

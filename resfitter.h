@@ -18,8 +18,6 @@ class ResFitter
     int maxSteps;
     double minError;
     double step;
-    double y0;
-    double k;
     vector<double> errors;
     vector<double> freq;
     vector<double> theta;
@@ -44,7 +42,7 @@ class ResFitter
     void gradDescentStep(double *params, double step);
     void gradDescent(double *params, double step);
     bool readDataFromStack(stack <struct Resonance> & stack);
-    void findParams();
+    void findParams(double y0);
 
 public:
     vector<struct Resonance> fittedData;
@@ -53,9 +51,9 @@ public:
      * minError - the minimum error level that will stop the descend
      * step - the value in gradient descend method  y1 = y0 - step*grad
      * file - element of class, that contain the fitting data*/
-    ResFitter(double maxSteps, double minError, double step, FileData *file, double y0, double k);
+    ResFitter(double maxSteps, double minError, double step, FileData *file);
 
-    void fitData(stack <struct Resonance> &stack);
+    void fitData(stack <struct Resonance> &stack, const vector<double> &baseline);
 };
 
 #endif // RESFITTER_H

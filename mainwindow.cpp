@@ -41,8 +41,8 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     ui->customPlot->addGraph();
     ui->customPlot->addGraph();
     // create graphs that show found resonances
-    //int resNum = 4, numOfRes = fittedData.size();
-   /* for(int i = 0; i < numOfRes; i++)
+    int resNum = 4, numOfRes = fittedData.size();
+    for(int i = 0; i < numOfRes; i++)
     {
         Resonance resonance = fittedData[i];
 
@@ -59,7 +59,7 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
             ui->customPlot->graph(resNum)->addData(vectorx[resonance.a+1], vectory[resonance.a+1]);
         }
         resNum++;
-    }*/
+    }
     // give the axes appropriate labels:
     ui->customPlot->xAxis->setLabel("Frequency");
     ui->customPlot->yAxis->setLabel("Phase");
@@ -166,8 +166,8 @@ void MainWindow::on_pushButtonRun_clicked()
         minError = DEF_MIN_ERROR;
         step = DEF_STEP;
     }
-    fitter = new ResFitter(maxNumberOfSteps, minError, step, file, y0, k);
-    //fitter->fitData(st);
+    fitter = new ResFitter(maxNumberOfSteps, minError, step, file);
+    fitter->fitData(st, baseline);
 
     MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData);
     MainWindow::showGraphTemp(file->freqData, baseline, ui->comboBox->currentText() == "Use straight baseline",
