@@ -69,7 +69,7 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     ui->customPlot->replot();
 }
-void MainWindow::showGraphTemp(const vector<double> &vectorx,const vector <double> &baseline, bool straight, double trigg)
+void MainWindow::showGraphBaseline(const vector<double> &vectorx,const vector <double> &baseline, bool straight, double trigg)
 {
     int size = vectorx.size();
     if(straight)
@@ -170,14 +170,14 @@ void MainWindow::on_pushButtonRun_clicked()
     fitter->fitData(st, baseline);
 
     MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData);
-    MainWindow::showGraphTemp(file->freqData, baseline, ui->comboBox->currentText() == "Use straight baseline",
+    MainWindow::showGraphBaseline(file->freqData, baseline, ui->comboBox->currentText() == "Use straight baseline",
                               file->trigg);
-    QMessageBox::about(this, "Done", "Found  resonances   ");
-    //QString::number(fitter->fittedData.size())
-    //for(unsigned int i=0; i < fitter->fittedData.size(); i++)
-    //{
-    //    st.push(fitter->fittedData[i]);
-    //}
+    QMessageBox::about(this, "Done", "Found " + QString::number(fitter->fittedData.size()) + " resonances   ");
+
+    for(unsigned int i=0; i < fitter->fittedData.size(); i++)
+    {
+        st.push(fitter->fittedData[i]);
+    }
     ui->pushButton->setEnabled(true);
 }
 
