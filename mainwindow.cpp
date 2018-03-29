@@ -121,7 +121,7 @@ void MainWindow::on_pushButtonRun_clicked()
             QMessageBox::about(this, "Error", "Cannot find phase column");
             return;
     }
-    double k = 0, y0 = 110;
+    double k = 0, y0 = 0;
     file->trigg = ui->lineEditTrigg->text().toDouble();
     file->w = ui->spinBoxW->value();
     file->cycleNum = ui->spinBoxCycleNum->value();
