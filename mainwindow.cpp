@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &vectory,
-                           vector<struct Resonance> fittedData)
+                           vector<struct Resonance> fittedData, const vector <double> &baseline)
 {
     // clear graphs data
     ui->customPlot->clearGraphs();
@@ -58,6 +58,26 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
             ui->customPlot->graph(resNum)->addData(vectorx[resonance.a-1], vectory[resonance.a-1]);
             ui->customPlot->graph(resNum)->addData(vectorx[resonance.a+1], vectory[resonance.a+1]);
         }
+        else
+        //resonance display correction
+            if(resonance.a > 0 && resonance.b - 1 < vectorx.size())
+            {
+                if(resonance.yc - resonance.y0 > 0)
+                {
+                    if(vectory[resonance.a - 1] < baseline[resonance.a - 1])
+                        ui->customPlot->graph(resNum)->addData(vectorx[resonance.a-1], vectory[resonance.a-1]);
+                    if(vectory[resonance.b - 1] < baseline[resonance.b - 1])
+                        ui->customPlot->graph(resNum)->addData(vectorx[resonance.b+1], vectory[resonance.b+1]);
+                }
+                else
+                {
+                    if(vectory[resonance.a - 1] > baseline[resonance.a - 1])
+                        ui->customPlot->graph(resNum)->addData(vectorx[resonance.a-1], vectory[resonance.a-1]);
+                    if(vectory[resonance.b - 1] > baseline[resonance.b - 1])
+                        ui->customPlot->graph(resNum)->addData(vectorx[resonance.b+1], vectory[resonance.b+1]);
+                }
+            }
+        //resonance display correction
         resNum++;
     }
     // give the axes appropriate labels:
@@ -169,7 +189,7 @@ void MainWindow::on_pushButtonRun_clicked()
     fitter = new ResFitter(maxNumberOfSteps, minError, step, file);
     fitter->fitData(st, baseline);
 
-    MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData);
+    MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData, baseline);
     MainWindow::showGraphBaseline(file->freqData, baseline, ui->comboBox->currentText() == "Use straight baseline",
                               file->trigg);
     QMessageBox::about(this, "Done", "Found " + QString::number(fitter->fittedData.size()) + " resonances   ");
@@ -239,7 +259,7 @@ void MainWindow::slotMousePress(QMouseEvent *event)
     {
         if(xc >= 0)
         {
-            QString str = QString::number(xc);
+            QString str = QString::number(xc,'g', 10);
             ui->lineEditRf->setText(str);
         }
         else

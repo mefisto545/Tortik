@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     void showGraph(const std::vector<double> &vectorx, const std::vector<double> &vectory,
-                   std::vector<struct Resonance> fittedData);
+                   std::vector<struct Resonance> fittedData, const vector <double> &baseline);
     void showGraphBaseline(const vector<double> &vectorx,const vector <double> &baseline, bool straight, double trigg);
     stack <struct Resonance> st;
     FileData *file;

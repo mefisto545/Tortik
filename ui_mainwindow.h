@@ -239,6 +239,7 @@ public:
         spinBoxCycleNum->setObjectName(QStringLiteral("spinBoxCycleNum"));
         spinBoxCycleNum->setMinimum(1);
         spinBoxCycleNum->setMaximum(25);
+        spinBoxCycleNum->setValue(5);
 
         horizontalLayout_2->addWidget(spinBoxCycleNum);
 
@@ -434,7 +435,7 @@ public:
         labelPhase->setText(QApplication::translate("MainWindow", "Phase column name", 0));
         lineEditPhase->setText(QApplication::translate("MainWindow", "Theta", 0));
         labelTrigg->setText(QApplication::translate("MainWindow", "       Trigger", 0));
-        lineEditTrigg->setText(QApplication::translate("MainWindow", "1", 0));
+        lineEditTrigg->setText(QApplication::translate("MainWindow", "5", 0));
         labelW->setText(QApplication::translate("MainWindow", "  Noise selection", 0));
         label->setText(QApplication::translate("MainWindow", "Number of cycles", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Ignore resonances with low SNR", 0));
@@ -445,7 +446,7 @@ public:
         label_4->setText(QApplication::translate("MainWindow", "Resonance frequency", 0));
         checkBoxEnableFitParams->setText(QApplication::translate("MainWindow", "Use custom fit parameters", 0));
         labelFitStep->setText(QApplication::translate("MainWindow", "Fit step", 0));
-        lineEditFitStep->setText(QApplication::translate("MainWindow", "0.5", 0));
+        lineEditFitStep->setText(QApplication::translate("MainWindow", "0.1", 0));
         label_3->setText(QApplication::translate("MainWindow", "MinError", 0));
         lineEditMinError->setText(QApplication::translate("MainWindow", "1E-3", 0));
         labelNumOfSteps->setText(QApplication::translate("MainWindow", "Number of steps", 0));

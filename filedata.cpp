@@ -1,4 +1,6 @@
 #include "filedata.h"
+#include <iomanip>
+
 
 FileData::FileData(const string &path, const string &freqName, const string &phaseName)
 {
@@ -130,19 +132,22 @@ void FileData::writeStackToFile(const string &path, stack<struct Resonance> st)
 void FileData::writeVectorToFile(const string &path, const vector<struct Resonance> &data)
 {
     ofstream fileStream(path);
-    fileStream << "Fleft\t" << "Fright\t" << "SNR\t" << "dTheta\t"<< "y0\t" << "yc\t" << "xc\t" << "width\t" << "mse\n";
+    fileStream /*<< "Fleft\t" << "Fright\t" */
+               << "SNR\t" << "dTheta\t" << "y0\t" << "yc\t"  << "width\t" << "mse\t" << "xc\n";
     int numOfResonances = data.size();
+
     for (int i = 0; i < numOfResonances; i++)
     {
-        fileStream << freqData[data[i].a] << "\t"
-                   << freqData[data[i].b] << "\t"
-                   << data[i].snr << "\t"
-                   <<data[i].y0 - data[i].yc << "\t"
+        fileStream.setf(std::ios::fixed);
+        fileStream << setprecision(1)//<< freqData[data[i].a] << "\t"
+                   //<< freqData[data[i].b] << "\t"
+                   << setprecision(0)<< data[i].snr << "\t"
+                   << setprecision(2)<< data[i].y0 - data[i].yc << "\t"
                    << data[i].y0 << "\t"
-                   << data[i].yc << "\t"//
-                   << data[i].xc << "\t"
-                   << data[i].width << "\t"
-                   << data[i].mse << "\n";
+                   << data[i].yc << "\t"
+                   << setprecision(2)<< data[i].width << "\t"
+                   << setprecision(5)<< data[i].mse << "\t";
+        fileStream << setprecision(3) << data[i].xc << endl;
     }
     fileStream.close();
 }
