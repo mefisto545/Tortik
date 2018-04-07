@@ -3,13 +3,19 @@
 
 #define DEF_MAX_STEPS 1e2;
 #define DEF_MIN_ERROR 1e-3;
-#define DEF_STEP 0.5;
+#define DEF_MIN_NORM_DIFF 1e-3;
 
 #include <vector>
 #include "filedata.h"
 #include <math.h>
 #include <stack>
 #include <iostream>
+
+#include "Libs/Eigen/unsupported/Eigen/Polynomials"
+#include <algorithm>
+#include <cmath>
+#include <complex>
+#include <iterator>
 
 using namespace std;
 
@@ -18,6 +24,7 @@ class ResFitter
     int maxSteps;
     double minError;
     double step;
+    double minNormDiff;
     vector<double> errors;
     vector<double> freq;
     vector<double> theta;
@@ -39,10 +46,12 @@ class ResFitter
     double lorentzDw(double x, double *params);
 
     double errorMSE(double *params);
-    void gradDescentStep(double *params, double step);
-    void gradDescent(double *params, double step);
+    double eucNorm(double *a, double *b);
+    void gradDescentStep(double *params);
+    void gradDescent(double *params);
     bool readDataFromStack(stack <struct Resonance> & stack);
     void findParams(double y0);
+    double findStep(double* initialParams, double* gradient);
 
 public:
     vector<struct Resonance> fittedData;
@@ -51,7 +60,7 @@ public:
      * minError - the minimum error level that will stop the descend
      * step - the value in gradient descend method  y1 = y0 - step*grad
      * file - element of class, that contain the fitting data*/
-    ResFitter(double maxSteps, double minError, double step, FileData *file);
+    ResFitter(double maxSteps, double minError, FileData *file);
 
     void fitData(stack <struct Resonance> &stack, const vector<double> &baseline);
 };

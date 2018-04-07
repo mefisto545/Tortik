@@ -35,9 +35,9 @@
 #include <vector>
 #include <iostream>
 #include <stdlib.h>
-#include <C:\Users\Lenovo\Desktop\ALS-Baseline-Subtraction-1.0.0\Eigen\Eigen\Eigen>
-#include <C:\Users\Lenovo\Desktop\ALS-Baseline-Subtraction-1.0.0\Eigen\Eigen\Sparse>
-#include "C:\Users\Lenovo\Desktop\ALS-Baseline-Subtraction-1.0.0\fftw-3.3.7\api\fftw3.h"
+#include "Libs/Eigen/Eigen/Eigen"
+#include "Libs/Eigen/Eigen/Sparse"
+#include "Libs/fftw-3.3.7/api/fftw3.h"
 #include <time.h>
 #include <memory>
 

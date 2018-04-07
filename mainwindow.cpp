@@ -173,20 +173,18 @@ void MainWindow::on_pushButtonRun_clicked()
     trigger(file->freqData, file->phaseData, baseline, file->trigg, file->w, ui->checkBox->isChecked(), file->minSNR, &st);
 
     int maxNumberOfSteps;
-    double minError, step;
+    double minError;
     if (ui->checkBoxEnableFitParams->isChecked())
     {
         maxNumberOfSteps = ui->lineEditNumOfSteps->text().toDouble();
         minError = ui->lineEditMinError->text().toDouble();
-        step = ui->lineEditFitStep->text().toDouble();
     }
     else
     {
         maxNumberOfSteps = DEF_MAX_STEPS;
         minError = DEF_MIN_ERROR;
-        step = DEF_STEP;
     }
-    fitter = new ResFitter(maxNumberOfSteps, minError, step, file);
+    fitter = new ResFitter(maxNumberOfSteps, minError, file);
     fitter->fitData(st, baseline);
 
     MainWindow::showGraph(file->freqData, file->phaseData, fitter->fittedData, baseline);
@@ -214,7 +212,6 @@ void MainWindow::on_checkBoxLine_clicked(bool checked)
 
 void MainWindow::on_checkBoxEnableFitParams_clicked(bool checked)
 {
-        ui->lineEditFitStep->setEnabled(checked);
         ui->lineEditMinError->setEnabled(checked);
         ui->lineEditNumOfSteps->setEnabled(checked);
 }

@@ -1,5 +1,4 @@
 #include "filedata.h"
-#include <iomanip>
 
 
 FileData::FileData(const string &path, const string &freqName, const string &phaseName)
@@ -138,7 +137,7 @@ void FileData::writeVectorToFile(const string &path, const vector<struct Resonan
 
     for (int i = 0; i < numOfResonances; i++)
     {
-        fileStream.setf(std::ios::fixed);
+        fileStream.setf(ios::fixed);
         fileStream << setprecision(1)//<< freqData[data[i].a] << "\t"
                    //<< freqData[data[i].b] << "\t"
                    << setprecision(0)<< data[i].snr << "\t"
