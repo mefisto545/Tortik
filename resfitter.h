@@ -10,6 +10,7 @@
 #include <math.h>
 #include <stack>
 #include <iostream>
+#include <QTime>
 
 #include "Libs/Eigen/unsupported/Eigen/Polynomials"
 #include <algorithm>
@@ -46,13 +47,16 @@ class ResFitter
     double lorentzDw(double x, double *params);
 
     double errorMSE(double *params);
-    double eucNorm(double *a, double *b);
     void gradDescentStep(double *params);
-    void gradDescent(double *params);
+    void stochGradDescentStep(double *params, int numPoint);
+    void gradDescent();
     bool readDataFromStack(stack <struct Resonance> & stack);
-    void findParams(double y0);
-    double findStep(double* initialParams, double* gradient);
+    void findInitialParams(double y0);
+    double findStep(double* initialParams, double* gradient, int numPoint);
 
+    vector<double> eigenSolver(const std::vector<double>& coeffA);
+    vector<double> eigenSolverMonic(const std::vector<double>& coefficients);
+    double randInt(int high);
 public:
     vector<struct Resonance> fittedData;
     /*ResFitter - method that perform fitting data with Lorentz peak function. The result of fitting writes in text files.

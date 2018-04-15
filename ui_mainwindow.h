@@ -65,29 +65,29 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_2;
     QLineEdit *lineEditSNR;
+    QLabel *label_4;
+    QLineEdit *lineEditRf;
+    QLabel *label_9;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButtonRun;
     QPushButton *pushButton;
-    QLabel *label_4;
-    QLineEdit *lineEditRf;
+    QLineEdit *lineEditW;
     QFormLayout *formLayout_2;
     QCheckBox *checkBoxEnableFitParams;
-    QLabel *labelFitStep;
-    QLineEdit *lineEditFitStep;
     QLabel *label_3;
     QLineEdit *lineEditMinError;
     QLabel *labelNumOfSteps;
     QLineEdit *lineEditNumOfSteps;
-    QLabel *label_5;
-    QLineEdit *lineEditSlope;
-    QLabel *label_6;
-    QLineEdit *lineEditInter;
-    QCheckBox *checkBoxLine;
-    QComboBox *comboBox;
     QLabel *label_7;
     QLineEdit *lineEditP;
     QLabel *label_8;
     QLineEdit *lineEditSmooth;
+    QComboBox *comboBox;
+    QCheckBox *checkBoxLine;
+    QLabel *label_5;
+    QLineEdit *lineEditSlope;
+    QLabel *label_6;
+    QLineEdit *lineEditInter;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
 
@@ -96,7 +96,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(550, 716);
-        MainWindow->setMinimumSize(QSize(550, 520));
+        MainWindow->setMinimumSize(QSize(550, 716));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         customPlot = new QCustomPlot(centralWidget);
@@ -104,7 +104,7 @@ public:
         customPlot->setGeometry(QRect(10, 350, 531, 341));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 10, 527, 346));
+        layoutWidget->setGeometry(QRect(10, 10, 527, 369));
         verticalLayout_3 = new QVBoxLayout(layoutWidget);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -277,23 +277,6 @@ public:
 
         formLayout->setLayout(3, QFormLayout::SpanningRole, verticalLayout_2);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        pushButtonRun = new QPushButton(layoutWidget);
-        pushButtonRun->setObjectName(QStringLiteral("pushButtonRun"));
-
-        horizontalLayout->addWidget(pushButtonRun);
-
-
-        formLayout->setLayout(5, QFormLayout::SpanningRole, horizontalLayout);
-
-        pushButton = new QPushButton(layoutWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setEnabled(false);
-
-        formLayout->setWidget(6, QFormLayout::SpanningRole, pushButton);
-
         label_4 = new QLabel(layoutWidget);
         label_4->setObjectName(QStringLiteral("label_4"));
 
@@ -303,6 +286,33 @@ public:
         lineEditRf->setObjectName(QStringLiteral("lineEditRf"));
 
         formLayout->setWidget(4, QFormLayout::FieldRole, lineEditRf);
+
+        label_9 = new QLabel(layoutWidget);
+        label_9->setObjectName(QStringLiteral("label_9"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, label_9);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        pushButtonRun = new QPushButton(layoutWidget);
+        pushButtonRun->setObjectName(QStringLiteral("pushButtonRun"));
+
+        horizontalLayout->addWidget(pushButtonRun);
+
+
+        formLayout->setLayout(6, QFormLayout::SpanningRole, horizontalLayout);
+
+        pushButton = new QPushButton(layoutWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setEnabled(false);
+
+        formLayout->setWidget(7, QFormLayout::SpanningRole, pushButton);
+
+        lineEditW = new QLineEdit(layoutWidget);
+        lineEditW->setObjectName(QStringLiteral("lineEditW"));
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, lineEditW);
 
 
         horizontalLayout_4->addLayout(formLayout);
@@ -315,91 +325,79 @@ public:
 
         formLayout_2->setWidget(1, QFormLayout::SpanningRole, checkBoxEnableFitParams);
 
-        labelFitStep = new QLabel(layoutWidget);
-        labelFitStep->setObjectName(QStringLiteral("labelFitStep"));
-        labelFitStep->setAlignment(Qt::AlignCenter);
-
-        formLayout_2->setWidget(2, QFormLayout::LabelRole, labelFitStep);
-
-        lineEditFitStep = new QLineEdit(layoutWidget);
-        lineEditFitStep->setObjectName(QStringLiteral("lineEditFitStep"));
-        lineEditFitStep->setEnabled(false);
-
-        formLayout_2->setWidget(2, QFormLayout::FieldRole, lineEditFitStep);
-
         label_3 = new QLabel(layoutWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
 
-        formLayout_2->setWidget(3, QFormLayout::LabelRole, label_3);
+        formLayout_2->setWidget(2, QFormLayout::LabelRole, label_3);
 
         lineEditMinError = new QLineEdit(layoutWidget);
         lineEditMinError->setObjectName(QStringLiteral("lineEditMinError"));
         lineEditMinError->setEnabled(false);
 
-        formLayout_2->setWidget(3, QFormLayout::FieldRole, lineEditMinError);
+        formLayout_2->setWidget(2, QFormLayout::FieldRole, lineEditMinError);
 
         labelNumOfSteps = new QLabel(layoutWidget);
         labelNumOfSteps->setObjectName(QStringLiteral("labelNumOfSteps"));
 
-        formLayout_2->setWidget(4, QFormLayout::LabelRole, labelNumOfSteps);
+        formLayout_2->setWidget(3, QFormLayout::LabelRole, labelNumOfSteps);
 
         lineEditNumOfSteps = new QLineEdit(layoutWidget);
         lineEditNumOfSteps->setObjectName(QStringLiteral("lineEditNumOfSteps"));
         lineEditNumOfSteps->setEnabled(false);
 
-        formLayout_2->setWidget(4, QFormLayout::FieldRole, lineEditNumOfSteps);
+        formLayout_2->setWidget(3, QFormLayout::FieldRole, lineEditNumOfSteps);
+
+        label_7 = new QLabel(layoutWidget);
+        label_7->setObjectName(QStringLiteral("label_7"));
+
+        formLayout_2->setWidget(4, QFormLayout::LabelRole, label_7);
+
+        lineEditP = new QLineEdit(layoutWidget);
+        lineEditP->setObjectName(QStringLiteral("lineEditP"));
+
+        formLayout_2->setWidget(4, QFormLayout::FieldRole, lineEditP);
+
+        label_8 = new QLabel(layoutWidget);
+        label_8->setObjectName(QStringLiteral("label_8"));
+
+        formLayout_2->setWidget(5, QFormLayout::LabelRole, label_8);
+
+        lineEditSmooth = new QLineEdit(layoutWidget);
+        lineEditSmooth->setObjectName(QStringLiteral("lineEditSmooth"));
+
+        formLayout_2->setWidget(5, QFormLayout::FieldRole, lineEditSmooth);
+
+        comboBox = new QComboBox(layoutWidget);
+        comboBox->setObjectName(QStringLiteral("comboBox"));
+
+        formLayout_2->setWidget(6, QFormLayout::SpanningRole, comboBox);
+
+        checkBoxLine = new QCheckBox(layoutWidget);
+        checkBoxLine->setObjectName(QStringLiteral("checkBoxLine"));
+
+        formLayout_2->setWidget(7, QFormLayout::SpanningRole, checkBoxLine);
 
         label_5 = new QLabel(layoutWidget);
         label_5->setObjectName(QStringLiteral("label_5"));
 
-        formLayout_2->setWidget(9, QFormLayout::LabelRole, label_5);
+        formLayout_2->setWidget(8, QFormLayout::LabelRole, label_5);
 
         lineEditSlope = new QLineEdit(layoutWidget);
         lineEditSlope->setObjectName(QStringLiteral("lineEditSlope"));
         lineEditSlope->setEnabled(false);
 
-        formLayout_2->setWidget(9, QFormLayout::FieldRole, lineEditSlope);
+        formLayout_2->setWidget(8, QFormLayout::FieldRole, lineEditSlope);
 
         label_6 = new QLabel(layoutWidget);
         label_6->setObjectName(QStringLiteral("label_6"));
 
-        formLayout_2->setWidget(10, QFormLayout::LabelRole, label_6);
+        formLayout_2->setWidget(9, QFormLayout::LabelRole, label_6);
 
         lineEditInter = new QLineEdit(layoutWidget);
         lineEditInter->setObjectName(QStringLiteral("lineEditInter"));
         lineEditInter->setEnabled(false);
 
-        formLayout_2->setWidget(10, QFormLayout::FieldRole, lineEditInter);
-
-        checkBoxLine = new QCheckBox(layoutWidget);
-        checkBoxLine->setObjectName(QStringLiteral("checkBoxLine"));
-
-        formLayout_2->setWidget(8, QFormLayout::SpanningRole, checkBoxLine);
-
-        comboBox = new QComboBox(layoutWidget);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
-
-        formLayout_2->setWidget(7, QFormLayout::SpanningRole, comboBox);
-
-        label_7 = new QLabel(layoutWidget);
-        label_7->setObjectName(QStringLiteral("label_7"));
-
-        formLayout_2->setWidget(5, QFormLayout::LabelRole, label_7);
-
-        lineEditP = new QLineEdit(layoutWidget);
-        lineEditP->setObjectName(QStringLiteral("lineEditP"));
-
-        formLayout_2->setWidget(5, QFormLayout::FieldRole, lineEditP);
-
-        label_8 = new QLabel(layoutWidget);
-        label_8->setObjectName(QStringLiteral("label_8"));
-
-        formLayout_2->setWidget(6, QFormLayout::LabelRole, label_8);
-
-        lineEditSmooth = new QLineEdit(layoutWidget);
-        lineEditSmooth->setObjectName(QStringLiteral("lineEditSmooth"));
-
-        formLayout_2->setWidget(6, QFormLayout::FieldRole, lineEditSmooth);
+        formLayout_2->setWidget(9, QFormLayout::FieldRole, lineEditInter);
 
 
         horizontalLayout_4->addLayout(formLayout_2);
@@ -413,7 +411,7 @@ public:
         MainWindow->setStatusBar(statusBar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 550, 21));
+        menuBar->setGeometry(QRect(0, 0, 550, 20));
         MainWindow->setMenuBar(menuBar);
 
         retranslateUi(MainWindow);
@@ -441,24 +439,23 @@ public:
         checkBox->setText(QApplication::translate("MainWindow", "Ignore resonances with low SNR", 0));
         label_2->setText(QApplication::translate("MainWindow", "Min. SNR", 0));
         lineEditSNR->setText(QApplication::translate("MainWindow", "10", 0));
+        label_4->setText(QApplication::translate("MainWindow", "Resonance frequency", 0));
+        label_9->setText(QApplication::translate("MainWindow", "Resonance width", 0));
         pushButtonRun->setText(QApplication::translate("MainWindow", "Run", 0));
         pushButton->setText(QApplication::translate("MainWindow", "Save data", 0));
-        label_4->setText(QApplication::translate("MainWindow", "Resonance frequency", 0));
         checkBoxEnableFitParams->setText(QApplication::translate("MainWindow", "Use custom fit parameters", 0));
-        labelFitStep->setText(QApplication::translate("MainWindow", "Fit step", 0));
-        lineEditFitStep->setText(QApplication::translate("MainWindow", "0.1", 0));
         label_3->setText(QApplication::translate("MainWindow", "MinError", 0));
         lineEditMinError->setText(QApplication::translate("MainWindow", "1E-3", 0));
         labelNumOfSteps->setText(QApplication::translate("MainWindow", "Number of steps", 0));
         lineEditNumOfSteps->setText(QApplication::translate("MainWindow", "1E2", 0));
-        label_5->setText(QApplication::translate("MainWindow", "Slope", 0));
-        label_6->setText(QApplication::translate("MainWindow", "Interception", 0));
-        checkBoxLine->setText(QApplication::translate("MainWindow", "Use custom straight line parameters", 0));
-        comboBox->setCurrentText(QString());
         label_7->setText(QApplication::translate("MainWindow", "p-parameter", 0));
         lineEditP->setText(QApplication::translate("MainWindow", "0.3", 0));
         label_8->setText(QApplication::translate("MainWindow", "Smoothness", 0));
         lineEditSmooth->setText(QApplication::translate("MainWindow", "1E7", 0));
+        comboBox->setCurrentText(QString());
+        checkBoxLine->setText(QApplication::translate("MainWindow", "Use custom straight line parameters", 0));
+        label_5->setText(QApplication::translate("MainWindow", "Slope", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Interception", 0));
     } // retranslateUi
 
 };

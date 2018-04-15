@@ -7,6 +7,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+QMAKE_LFLAGS += -static -static-libgcc
 
 QMAKE_LFLAGS_RELEASE += -static -static-libgcc
 
@@ -21,6 +22,10 @@ QMAKE_CXXFLAGS += -isystem $$[QT_INSTALL_HEADERS]
 TARGET = ResFinder
 TEMPLATE = app
 
+win32 {
+        RC_FILE += file.rc
+        OTHER_FILES += file.rc
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \

@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MainWindow::setWindowTitle("ResFinder");
+    MainWindow::setWindowTitle("ResFinder_v1.0.0");
     connect(ui->customPlot, &QCustomPlot::mousePress, this, &MainWindow::slotMousePress);
     QStringList List;
     List.push_back("Use straight baseline");
@@ -230,7 +230,7 @@ void MainWindow::on_pushButtonExportFile_clicked()
     ui->lineEditExport->setText(fileName);
 }
 
-double resFreq(double f, stack <Resonance> st, vector <double> &x)
+Resonance resFreq(double f, stack <Resonance> st, vector <double> &x)
 {
     double h;
     while(!st.empty())
@@ -239,28 +239,36 @@ double resFreq(double f, stack <Resonance> st, vector <double> &x)
         {
             h = (x[st.top().a] - x[st.top().a - 1]) / 2.;
             if (x[st.top().a] - h <= f && f <= x[st.top().a] + h)
-                return st.top().xc;
+                return st.top();
         }
         if(x[st.top().a] <= f && f <= x[st.top().b])
-            return st.top().xc;
+            return st.top();
         st.pop();
     }
-    return -1;
+    return { 0 };
 }
 
 void MainWindow::slotMousePress(QMouseEvent *event)
 {
     double coordX = ui->customPlot->xAxis->pixelToCoord(event->pos().x());
-    double xc = resFreq(coordX, st, file->freqData);
+    double xc = 0, width = 0;
+    Resonance locRes = resFreq(coordX, st, file->freqData);
+    xc = locRes.xc;
+    width = locRes.width;
     if(!st.empty())
     {
         if(xc >= 0)
         {
-            QString str = QString::number(xc,'g', 10);
-            ui->lineEditRf->setText(str);
+            QString xcStr = QString::number(xc,'g', 10);
+            QString widthStr = QString::number(width, 'g', 6);
+            ui->lineEditRf->setText(xcStr);
+            ui->lineEditW->setText(widthStr);
         }
         else
+        {
             ui->lineEditRf->setText("");
+            ui->lineEditW->setText("");
+        }
     }
 }
 

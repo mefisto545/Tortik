@@ -13,7 +13,7 @@
   <property name="minimumSize">
    <size>
     <width>550</width>
-    <height>520</height>
+    <height>716</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
       <x>10</x>
       <y>10</y>
       <width>527</width>
-      <height>346</height>
+      <height>369</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -303,7 +303,24 @@
            </item>
           </layout>
          </item>
-         <item row="5" column="0" colspan="2">
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Resonance frequency</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="lineEditRf"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Resonance width</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
             <widget class="QPushButton" name="pushButtonRun">
@@ -314,7 +331,7 @@
            </item>
           </layout>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="7" column="0" colspan="2">
           <widget class="QPushButton" name="pushButton">
            <property name="enabled">
             <bool>false</bool>
@@ -324,15 +341,8 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Resonance frequency</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEditRf"/>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="lineEditW"/>
          </item>
         </layout>
        </item>
@@ -346,33 +356,13 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="labelFitStep">
-           <property name="text">
-            <string>Fit step</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="lineEditFitStep">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>0.1</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
             <string>MinError</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="2" column="1">
           <widget class="QLineEdit" name="lineEditMinError">
            <property name="enabled">
             <bool>false</bool>
@@ -382,14 +372,14 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="labelNumOfSteps">
            <property name="text">
             <string>Number of steps</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="3" column="1">
           <widget class="QLineEdit" name="lineEditNumOfSteps">
            <property name="enabled">
             <bool>false</bool>
@@ -399,73 +389,73 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Slope</string>
-           </property>
-          </widget>
-         </item>
-         <item row="9" column="1">
-          <widget class="QLineEdit" name="lineEditSlope">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Interception</string>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="1">
-          <widget class="QLineEdit" name="lineEditInter">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkBoxLine">
-           <property name="text">
-            <string>Use custom straight line parameters</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0" colspan="2">
-          <widget class="QComboBox" name="comboBox">
-           <property name="currentText">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>p-parameter</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="4" column="1">
           <widget class="QLineEdit" name="lineEditP">
            <property name="text">
             <string>0.3</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
             <string>Smoothness</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="5" column="1">
           <widget class="QLineEdit" name="lineEditSmooth">
            <property name="text">
             <string>1E7</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QComboBox" name="comboBox">
+           <property name="currentText">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkBoxLine">
+           <property name="text">
+            <string>Use custom straight line parameters</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Slope</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="lineEditSlope">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Interception</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLineEdit" name="lineEditInter">
+           <property name="enabled">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -483,7 +473,7 @@
      <x>0</x>
      <y>0</y>
      <width>550</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
