@@ -35,6 +35,7 @@ vector<double> ResFitter::eigenSolverMonic(const std::vector<double>& coefficien
 
 double ResFitter::randInt(int high)
 {
+    qsrand(228.0);
     return qrand() % ((high + 1) );
 }
 
