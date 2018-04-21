@@ -33,10 +33,24 @@ vector<double> ResFitter::eigenSolverMonic(const std::vector<double>& coefficien
 
 }
 
-double ResFitter::randInt(int high)
+int ResFitter::randInt()
 {
-    qsrand(228.0);
-    return qrand() % ((high + 1) );
+    double sum_of_weight = 0.0;
+    vector<double> weights;
+    for(int i = 0; i < freq.size(); i++)
+    {
+        weights.push_back(abs(1/(theta[i]-params[0])));
+    }
+    for(int i = 0; i < weights.size(); i++) {
+       sum_of_weight += weights[i];
+    }
+    double rnd = (double)(qrand()%((int)sum_of_weight + 1));
+    for(int i = 0; i < weights.size(); i++) {
+      if(rnd < weights[i])
+        return i;
+      rnd -= weights[i];
+    }
+    return weights.size()/2;
 }
 
 double ResFitter::findStep(double* initialParams, double* gradient, int numPoint)
@@ -48,6 +62,7 @@ double ResFitter::findStep(double* initialParams, double* gradient, int numPoint
     vector <double> real_roots;
     int minCoef = 0;
     int error = 0;
+    int order = 7;
     double xi = freq[numPoint], yi = theta[numPoint];
     //calculate the coefficients of polynomial eqation of first derivative of error function
     coefs[0] = 2*pow(w1,4.0)*pow(yc1,2.0)*(pow(w1,2.0) + 4*pow(xc1,2.0));
@@ -58,12 +73,20 @@ double ResFitter::findStep(double* initialParams, double* gradient, int numPoint
     coefs[5] = -12*pow(w,5.0)*w1*pow(yc1,2.0) - 30*pow(w,4.0)*pow(w1,2.0)*yc*yc1 + 30*pow(w,4.0)*pow(w1,2.0)*yc1*yi - 24*pow(w,4.0)*pow(xc1,2.0)*y0*yc1 + 24*pow(w,4.0)*pow(xc1,2.0)*yc*yc1 - 48*pow(w,3.0)*w1*pow(xc,2.0)*pow(yc1,2.0) - 96*pow(w,3.0)*w1*xc*xc1*y0*yc1 + 96*pow(w,3.0)*w1*xc*xc1*yc1*yi + 96*pow(w,3.0)*w1*xc*xi*pow(yc1,2.0) - 48*pow(w,3.0)*w1*pow(xc1,2.0)*y0*yc + 48*pow(w,3.0)*w1*pow(xc1,2.0)*y0*yi + 48*pow(w,3.0)*w1*pow(xc1,2.0)*pow(yc,2.0) - 48*pow(w,3.0)*w1*pow(xc1,2.0)*yc*yi + 96*pow(w,3.0)*w1*xc1*xi*y0*yc1 - 96*pow(w,3.0)*w1*xc1*xi*yc1*yi - 48*pow(w,3.0)*w1*pow(xi,2.0)*pow(yc1,2.0) - 144*pow(w,2.0)*pow(w1,2.0)*pow(xc,2.0)*yc*yc1 + 144*pow(w,2.0)*pow(w1,2.0)*pow(xc,2.0)*yc1*yi + 288*pow(w,2.0)*pow(w1,2.0)*xc*xi*yc*yc1 - 288*pow(w,2.0)*pow(w1,2.0)*xc*xi*yc1*yi - 144*pow(w,2.0)*pow(w1,2.0)*pow(xi,2.0)*yc*yc1 + 144*pow(w,2.0)*pow(w1,2.0)*pow(xi,2.0)*yc1*yi - 192*pow(w,2.0)*xc*pow(xc1,3.0)*pow(y0,2.0) + 192*pow(w,2.0)*xc*pow(xc1,3.0)*y0*yc + 192*pow(w,2.0)*xc*pow(xc1,3.0)*y0*yi - 192*pow(w,2.0)*xc*pow(xc1,3.0)*yc*yi + 192*pow(w,2.0)*pow(xc1,3.0)*xi*pow(y0,2.0) - 192*pow(w,2.0)*pow(xc1,3.0)*xi*y0*yc - 192*pow(w,2.0)*pow(xc1,3.0)*xi*y0*yi + 192*pow(w,2.0)*pow(xc1,3.0)*xi*yc*yi + 48*w*pow(w1,3.0)*pow(xc,2.0)*y0*yc - 48*w*pow(w1,3.0)*pow(xc,2.0)*y0*yi - 48*w*pow(w1,3.0)*pow(xc,2.0)*pow(yc,2.0) + 48*w*pow(w1,3.0)*pow(xc,2.0)*yc*yi - 96*w*pow(w1,3.0)*xc*xi*y0*yc + 96*w*pow(w1,3.0)*xc*xi*y0*yi + 96*w*pow(w1,3.0)*xc*xi*pow(yc,2.0) - 96*w*pow(w1,3.0)*xc*xi*yc*yi + 48*w*pow(w1,3.0)*pow(xi,2.0)*y0*yc - 48*w*pow(w1,3.0)*pow(xi,2.0)*y0*yi - 48*w*pow(w1,3.0)*pow(xi,2.0)*pow(yc,2.0) + 48*w*pow(w1,3.0)*pow(xi,2.0)*yc*yi - 384*w*w1*pow(xc,3.0)*xc1*y0*yc1 + 384*w*w1*pow(xc,3.0)*xc1*yc1*yi + 1152*w*w1*pow(xc,2.0)*xc1*xi*y0*yc1 - 1152*w*w1*pow(xc,2.0)*xc1*xi*yc1*yi - 1152*w*w1*xc*xc1*pow(xi,2.0)*y0*yc1 + 1152*w*w1*xc*xc1*pow(xi,2.0)*yc1*yi + 384*w*w1*xc1*pow(xi,3.0)*y0*yc1 - 384*w*w1*xc1*pow(xi,3.0)*yc1*yi - 96*pow(w1,2.0)*pow(xc,4.0)*y0*yc1 + 96*pow(w1,2.0)*pow(xc,4.0)*yc1*yi + 192*pow(w1,2.0)*pow(xc,3.0)*xc1*pow(y0,2.0) - 192*pow(w1,2.0)*pow(xc,3.0)*xc1*y0*yc - 192*pow(w1,2.0)*pow(xc,3.0)*xc1*y0*yi + 192*pow(w1,2.0)*pow(xc,3.0)*xc1*yc*yi + 384*pow(w1,2.0)*pow(xc,3.0)*xi*y0*yc1 - 384*pow(w1,2.0)*pow(xc,3.0)*xi*yc1*yi - 576*pow(w1,2.0)*pow(xc,2.0)*xc1*xi*pow(y0,2.0) + 576*pow(w1,2.0)*pow(xc,2.0)*xc1*xi*y0*yc + 576*pow(w1,2.0)*pow(xc,2.0)*xc1*xi*y0*yi - 576*pow(w1,2.0)*pow(xc,2.0)*xc1*xi*yc*yi - 576*pow(w1,2.0)*pow(xc,2.0)*pow(xi,2.0)*y0*yc1 + 576*pow(w1,2.0)*pow(xc,2.0)*pow(xi,2.0)*yc1*yi + 576*pow(w1,2.0)*xc*xc1*pow(xi,2.0)*pow(y0,2.0) - 576*pow(w1,2.0)*xc*xc1*pow(xi,2.0)*y0*yc - 576*pow(w1,2.0)*xc*xc1*pow(xi,2.0)*y0*yi + 576*pow(w1,2.0)*xc*xc1*pow(xi,2.0)*yc*yi + 384*pow(w1,2.0)*xc*pow(xi,3.0)*y0*yc1 - 384*pow(w1,2.0)*xc*pow(xi,3.0)*yc1*yi - 192*pow(w1,2.0)*xc1*pow(xi,3.0)*pow(y0,2.0) + 192*pow(w1,2.0)*xc1*pow(xi,3.0)*y0*yc + 192*pow(w1,2.0)*xc1*pow(xi,3.0)*y0*yi - 192*pow(w1,2.0)*xc1*pow(xi,3.0)*yc*yi - 96*pow(w1,2.0)*pow(xi,4.0)*y0*yc1 + 96*pow(w1,2.0)*pow(xi,4.0)*yc1*yi;
     coefs[6] = 2*pow(w,6.0)*pow(yc1,2.0) + 12*pow(w,5.0)*w1*yc*yc1 - 12*pow(w,5.0)*w1*yc1*yi + 8*pow(w,4.0)*pow(xc,2.0)*pow(yc1,2.0) + 32*pow(w,4.0)*xc*xc1*y0*yc1 - 16*pow(w,4.0)*xc*xc1*yc*yc1 - 16*pow(w,4.0)*xc*xc1*yc1*yi - 16*pow(w,4.0)*xc*xi*pow(yc1,2.0) + 16*pow(w,4.0)*pow(xc1,2.0)*y0*yc - 16*pow(w,4.0)*pow(xc1,2.0)*y0*yi - 16*pow(w,4.0)*pow(xc1,2.0)*pow(yc,2.0) + 16*pow(w,4.0)*pow(xc1,2.0)*yc*yi - 32*pow(w,4.0)*xc1*xi*y0*yc1 + 16*pow(w,4.0)*xc1*xi*yc*yc1 + 16*pow(w,4.0)*xc1*xi*yc1*yi + 8*pow(w,4.0)*pow(xi,2.0)*pow(yc1,2.0) + 16*pow(w,3.0)*w1*pow(xc,2.0)*y0*yc1 + 64*pow(w,3.0)*w1*pow(xc,2.0)*yc*yc1 - 80*pow(w,3.0)*w1*pow(xc,2.0)*yc1*yi + 32*pow(w,3.0)*w1*xc*xc1*y0*yc - 32*pow(w,3.0)*w1*xc*xc1*y0*yi - 32*pow(w,3.0)*w1*xc*xc1*pow(yc,2.0) + 32*pow(w,3.0)*w1*xc*xc1*yc*yi - 32*pow(w,3.0)*w1*xc*xi*y0*yc1 - 128*pow(w,3.0)*w1*xc*xi*yc*yc1 + 160*pow(w,3.0)*w1*xc*xi*yc1*yi - 32*pow(w,3.0)*w1*xc1*xi*y0*yc + 32*pow(w,3.0)*w1*xc1*xi*y0*yi + 32*pow(w,3.0)*w1*xc1*xi*pow(yc,2.0) - 32*pow(w,3.0)*w1*xc1*xi*yc*yi + 16*pow(w,3.0)*w1*pow(xi,2.0)*y0*yc1 + 64*pow(w,3.0)*w1*pow(xi,2.0)*yc*yc1 - 80*pow(w,3.0)*w1*pow(xi,2.0)*yc1*yi - 48*pow(w,2.0)*pow(w1,2.0)*pow(xc,2.0)*y0*yc + 48*pow(w,2.0)*pow(w1,2.0)*pow(xc,2.0)*y0*yi + 48*pow(w,2.0)*pow(w1,2.0)*pow(xc,2.0)*pow(yc,2.0) - 48*pow(w,2.0)*pow(w1,2.0)*pow(xc,2.0)*yc*yi + 96*pow(w,2.0)*pow(w1,2.0)*xc*xi*y0*yc - 96*pow(w,2.0)*pow(w1,2.0)*xc*xi*y0*yi - 96*pow(w,2.0)*pow(w1,2.0)*xc*xi*pow(yc,2.0) + 96*pow(w,2.0)*pow(w1,2.0)*xc*xi*yc*yi - 48*pow(w,2.0)*pow(w1,2.0)*pow(xi,2.0)*y0*yc + 48*pow(w,2.0)*pow(w1,2.0)*pow(xi,2.0)*y0*yi + 48*pow(w,2.0)*pow(w1,2.0)*pow(xi,2.0)*pow(yc,2.0) - 48*pow(w,2.0)*pow(w1,2.0)*pow(xi,2.0)*yc*yi + 64*pow(w,2.0)*pow(xc,3.0)*xc1*y0*yc1 - 64*pow(w,2.0)*pow(xc,3.0)*xc1*yc1*yi + 192*pow(w,2.0)*pow(xc,2.0)*pow(xc1,2.0)*pow(y0,2.0) - 192*pow(w,2.0)*pow(xc,2.0)*pow(xc1,2.0)*y0*yc - 192*pow(w,2.0)*pow(xc,2.0)*pow(xc1,2.0)*y0*yi + 192*pow(w,2.0)*pow(xc,2.0)*pow(xc1,2.0)*yc*yi - 192*pow(w,2.0)*pow(xc,2.0)*xc1*xi*y0*yc1 + 192*pow(w,2.0)*pow(xc,2.0)*xc1*xi*yc1*yi - 384*pow(w,2.0)*xc*pow(xc1,2.0)*xi*pow(y0,2.0) + 384*pow(w,2.0)*xc*pow(xc1,2.0)*xi*y0*yc + 384*pow(w,2.0)*xc*pow(xc1,2.0)*xi*y0*yi - 384*pow(w,2.0)*xc*pow(xc1,2.0)*xi*yc*yi + 192*pow(w,2.0)*xc*xc1*pow(xi,2.0)*y0*yc1 - 192*pow(w,2.0)*xc*xc1*pow(xi,2.0)*yc1*yi + 192*pow(w,2.0)*pow(xc1,2.0)*pow(xi,2.0)*pow(y0,2.0) - 192*pow(w,2.0)*pow(xc1,2.0)*pow(xi,2.0)*y0*yc - 192*pow(w,2.0)*pow(xc1,2.0)*pow(xi,2.0)*y0*yi + 192*pow(w,2.0)*pow(xc1,2.0)*pow(xi,2.0)*yc*yi - 64*pow(w,2.0)*xc1*pow(xi,3.0)*y0*yc1 + 64*pow(w,2.0)*xc1*pow(xi,3.0)*yc1*yi + 128*w*w1*pow(xc,4.0)*y0*yc1 - 128*w*w1*pow(xc,4.0)*yc1*yi - 128*w*w1*pow(xc,3.0)*xc1*pow(y0,2.0) + 128*w*w1*pow(xc,3.0)*xc1*y0*yc + 128*w*w1*pow(xc,3.0)*xc1*y0*yi - 128*w*w1*pow(xc,3.0)*xc1*yc*yi - 512*w*w1*pow(xc,3.0)*xi*y0*yc1 + 512*w*w1*pow(xc,3.0)*xi*yc1*yi + 384*w*w1*pow(xc,2.0)*xc1*xi*pow(y0,2.0) - 384*w*w1*pow(xc,2.0)*xc1*xi*y0*yc - 384*w*w1*pow(xc,2.0)*xc1*xi*y0*yi + 384*w*w1*pow(xc,2.0)*xc1*xi*yc*yi + 768*w*w1*pow(xc,2.0)*pow(xi,2.0)*y0*yc1 - 768*w*w1*pow(xc,2.0)*pow(xi,2.0)*yc1*yi - 384*w*w1*xc*xc1*pow(xi,2.0)*pow(y0,2.0) + 384*w*w1*xc*xc1*pow(xi,2.0)*y0*yc + 384*w*w1*xc*xc1*pow(xi,2.0)*y0*yi - 384*w*w1*xc*xc1*pow(xi,2.0)*yc*yi - 512*w*w1*xc*pow(xi,3.0)*y0*yc1 + 512*w*w1*xc*pow(xi,3.0)*yc1*yi + 128*w*w1*xc1*pow(xi,3.0)*pow(y0,2.0) - 128*w*w1*xc1*pow(xi,3.0)*y0*yc - 128*w*w1*xc1*pow(xi,3.0)*y0*yi + 128*w*w1*xc1*pow(xi,3.0)*yc*yi + 128*w*w1*pow(xi,4.0)*y0*yc1 - 128*w*w1*pow(xi,4.0)*yc1*yi - 64*pow(w1,2.0)*pow(xc,4.0)*pow(y0,2.0) + 64*pow(w1,2.0)*pow(xc,4.0)*y0*yc + 64*pow(w1,2.0)*pow(xc,4.0)*y0*yi - 64*pow(w1,2.0)*pow(xc,4.0)*yc*yi + 256*pow(w1,2.0)*pow(xc,3.0)*xi*pow(y0,2.0) - 256*pow(w1,2.0)*pow(xc,3.0)*xi*y0*yc - 256*pow(w1,2.0)*pow(xc,3.0)*xi*y0*yi + 256*pow(w1,2.0)*pow(xc,3.0)*xi*yc*yi - 384*pow(w1,2.0)*pow(xc,2.0)*pow(xi,2.0)*pow(y0,2.0) + 384*pow(w1,2.0)*pow(xc,2.0)*pow(xi,2.0)*y0*yc + 384*pow(w1,2.0)*pow(xc,2.0)*pow(xi,2.0)*y0*yi - 384*pow(w1,2.0)*pow(xc,2.0)*pow(xi,2.0)*yc*yi + 256*pow(w1,2.0)*xc*pow(xi,3.0)*pow(y0,2.0) - 256*pow(w1,2.0)*xc*pow(xi,3.0)*y0*yc - 256*pow(w1,2.0)*xc*pow(xi,3.0)*y0*yi + 256*pow(w1,2.0)*xc*pow(xi,3.0)*yc*yi - 64*pow(w1,2.0)*pow(xi,4.0)*pow(y0,2.0) + 64*pow(w1,2.0)*pow(xi,4.0)*y0*yc + 64*pow(w1,2.0)*pow(xi,4.0)*y0*yi - 64*pow(w1,2.0)*pow(xi,4.0)*yc*yi;
     coefs[7] = 2*w*(-pow(w,5.0)*yc*yc1 + pow(w,5.0)*yc1*yi - 4*pow(w,3.0)*pow(xc,2.0)*y0*yc1 - 4*pow(w,3.0)*pow(xc,2.0)*yc*yc1 + 8*pow(w,3.0)*pow(xc,2.0)*yc1*yi - 8*pow(w,3.0)*xc*xc1*y0*yc + 8*pow(w,3.0)*xc*xc1*y0*yi + 8*pow(w,3.0)*xc*xc1*pow(yc,2.0) - 8*pow(w,3.0)*xc*xc1*yc*yi + 8*pow(w,3.0)*xc*xi*y0*yc1 + 8*pow(w,3.0)*xc*xi*yc*yc1 - 16*pow(w,3.0)*xc*xi*yc1*yi + 8*pow(w,3.0)*xc1*xi*y0*yc - 8*pow(w,3.0)*xc1*xi*y0*yi - 8*pow(w,3.0)*xc1*xi*pow(yc,2.0) + 8*pow(w,3.0)*xc1*xi*yc*yi - 4*pow(w,3.0)*pow(xi,2.0)*y0*yc1 - 4*pow(w,3.0)*pow(xi,2.0)*yc*yc1 + 8*pow(w,3.0)*pow(xi,2.0)*yc1*yi + 8*pow(w,2.0)*w1*pow(xc,2.0)*y0*yc - 8*pow(w,2.0)*w1*pow(xc,2.0)*y0*yi - 8*pow(w,2.0)*w1*pow(xc,2.0)*pow(yc,2.0) + 8*pow(w,2.0)*w1*pow(xc,2.0)*yc*yi - 16*pow(w,2.0)*w1*xc*xi*y0*yc + 16*pow(w,2.0)*w1*xc*xi*y0*yi + 16*pow(w,2.0)*w1*xc*xi*pow(yc,2.0) - 16*pow(w,2.0)*w1*xc*xi*yc*yi + 8*pow(w,2.0)*w1*pow(xi,2.0)*y0*yc - 8*pow(w,2.0)*w1*pow(xi,2.0)*y0*yi - 8*pow(w,2.0)*w1*pow(xi,2.0)*pow(yc,2.0) + 8*pow(w,2.0)*w1*pow(xi,2.0)*yc*yi - 16*w*pow(xc,4.0)*y0*yc1 + 16*w*pow(xc,4.0)*yc1*yi - 32*w*pow(xc,3.0)*xc1*pow(y0,2.0) + 32*w*pow(xc,3.0)*xc1*y0*yc + 32*w*pow(xc,3.0)*xc1*y0*yi - 32*w*pow(xc,3.0)*xc1*yc*yi + 64*w*pow(xc,3.0)*xi*y0*yc1 - 64*w*pow(xc,3.0)*xi*yc1*yi + 96*w*pow(xc,2.0)*xc1*xi*pow(y0,2.0) - 96*w*pow(xc,2.0)*xc1*xi*y0*yc - 96*w*pow(xc,2.0)*xc1*xi*y0*yi + 96*w*pow(xc,2.0)*xc1*xi*yc*yi - 96*w*pow(xc,2.0)*pow(xi,2.0)*y0*yc1 + 96*w*pow(xc,2.0)*pow(xi,2.0)*yc1*yi - 96*w*xc*xc1*pow(xi,2.0)*pow(y0,2.0) + 96*w*xc*xc1*pow(xi,2.0)*y0*yc + 96*w*xc*xc1*pow(xi,2.0)*y0*yi - 96*w*xc*xc1*pow(xi,2.0)*yc*yi + 64*w*xc*pow(xi,3.0)*y0*yc1 - 64*w*xc*pow(xi,3.0)*yc1*yi + 32*w*xc1*pow(xi,3.0)*pow(y0,2.0) - 32*w*xc1*pow(xi,3.0)*y0*yc - 32*w*xc1*pow(xi,3.0)*y0*yi + 32*w*xc1*pow(xi,3.0)*yc*yi - 16*w*pow(xi,4.0)*y0*yc1 + 16*w*pow(xi,4.0)*yc1*yi + 32*w1*pow(xc,4.0)*pow(y0,2.0) - 32*w1*pow(xc,4.0)*y0*yc - 32*w1*pow(xc,4.0)*y0*yi + 32*w1*pow(xc,4.0)*yc*yi - 128*w1*pow(xc,3.0)*xi*pow(y0,2.0) + 128*w1*pow(xc,3.0)*xi*y0*yc + 128*w1*pow(xc,3.0)*xi*y0*yi - 128*w1*pow(xc,3.0)*xi*yc*yi + 192*w1*pow(xc,2.0)*pow(xi,2.0)*pow(y0,2.0) - 192*w1*pow(xc,2.0)*pow(xi,2.0)*y0*yc - 192*w1*pow(xc,2.0)*pow(xi,2.0)*y0*yi + 192*w1*pow(xc,2.0)*pow(xi,2.0)*yc*yi - 128*w1*xc*pow(xi,3.0)*pow(y0,2.0) + 128*w1*xc*pow(xi,3.0)*y0*yc + 128*w1*xc*pow(xi,3.0)*y0*yi - 128*w1*xc*pow(xi,3.0)*yc*yi + 32*w1*pow(xi,4.0)*pow(y0,2.0) - 32*w1*pow(xi,4.0)*y0*yc - 32*w1*pow(xi,4.0)*y0*yi + 32*w1*pow(xi,4.0)*yc*yi);
-    //transform them to the monic polynomial coeffs
-    for (int i=0; i < 7;i++)
+    //determine the order of polynomial
+    for (int i = 0; i < 7; i++)
     {
-        polyCoefs[i]=coefs[7-i]/coefs[0];
+        if (abs(coefs[i]) != 0.0)
+        {
+            order = i;
+            break;
+        }
     }
-
+    //transform them to the monic polynomial coeffs
+    for (int i=0; i < 7 - order;i++)
+    {
+        polyCoefs[i]=coefs[7-i]/coefs[order];
+    }
     real_roots = ResFitter::eigenSolverMonic(polyCoefs);
     for (int i = 0; i < real_roots.size(); i ++)
     {
@@ -84,7 +107,7 @@ double ResFitter::findStep(double* initialParams, double* gradient, int numPoint
     if (real_roots.size() > 0 && abs(real_roots[minCoef]) < 1.0)
     {
         return real_roots[minCoef];
-    }
+    }   
     else return 0.0;
 }
 
@@ -162,6 +185,7 @@ void ResFitter::stochGradDescentStep(double *params, int numPoint)
 
 void ResFitter::gradDescent()
 {
+    qsrand(228.0);
     double locError = 1;
     int steps = 1;
     double minLocalError = ResFitter::errorMSE(params);
@@ -171,7 +195,7 @@ void ResFitter::gradDescent()
 
     while(steps < maxSteps && locError > minError)
     {
-        int numPoint = ResFitter::randInt(freq.size()-1);
+        int numPoint = ResFitter::randInt();
         stochGradDescentStep(localParams, numPoint);
         locError = ResFitter::errorMSE(localParams);
         errors.push_back(locError);      
@@ -213,11 +237,39 @@ void ResFitter::findInitialParams(double y0)
         sum += freq[i];
         if (theta[i] < theta[min]) min = i;
     }
+    double depth = abs(y0 - theta[min]);
+    double right = -1, left = -1;
+    for (int i = min; i < freq.size(); i++)
+    {
+        if (abs(theta[i]-y0) < 0.5 * depth)
+        {
+            right =freq[i] + (freq[i] - freq[i-1])*((y0+theta[min])/2.0 - theta[i])/(theta[i] - theta[i-1]);
+            break;
+        }
+    }
+    for (int i = min; i > 0; i--)
+    {
+        if (abs(theta[i]-y0) < 0.5 * depth)
+        {
+            left = freq[i] + (freq[i] - freq[i-1])*((y0+theta[min])/2.0 - theta[i])/(theta[i] - theta[i-1]);
+            break;
+        }
+    }
     //initial parameters for fit
     params[0] = y0;
     params[1]= theta[min];
     params[2]= freq[min];
-    params[3]= (freq.back() - freq[0]) / 2.0;
+    if (left > 0.0)
+    {
+        if (right > 0.0) params[3] = right - left;
+        else params[3] = (freq[min] - left) * 2.0;
+    }
+    else if (right > 0.0)
+    {
+        params[3] = (right - freq[min]) * 2.0;
+    }
+    else
+        params[3] = (freq.back() - freq[0]) / 2.0;
 }
 
 void ResFitter::fitData(stack <struct Resonance> &stack, const vector<double> &baseline)

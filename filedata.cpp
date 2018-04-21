@@ -119,7 +119,7 @@ void FileData::writeStackToFile(const string &path, stack<struct Resonance> st)
                    << st.top().b << "\t"
                    << st.top().snr << "\t"
                    << st.top().y0 << "\t"
-                   << st.top().yc << "\t"//
+                   << st.top().yc << "\t"
                    << st.top().xc << "\t"
                    << st.top().width << "\t"
                    << st.top().mse << "\n";
@@ -138,8 +138,7 @@ void FileData::writeVectorToFile(const string &path, const vector<struct Resonan
     for (int i = 0; i < numOfResonances; i++)
     {
         fileStream.setf(ios::fixed);
-        fileStream << setprecision(1)//<< freqData[data[i].a] << "\t"
-                   //<< freqData[data[i].b] << "\t"
+        fileStream << setprecision(1)
                    << setprecision(0)<< data[i].snr << "\t"
                    << setprecision(2)<< data[i].y0 - data[i].yc << "\t"
                    << data[i].y0 << "\t"

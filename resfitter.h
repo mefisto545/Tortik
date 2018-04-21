@@ -4,6 +4,7 @@
 #define DEF_MAX_STEPS 1e2;
 #define DEF_MIN_ERROR 1e-3;
 #define DEF_MIN_NORM_DIFF 1e-3;
+#define NOISE_LEVEL 0.25;
 
 #include <vector>
 #include "filedata.h"
@@ -31,11 +32,8 @@ class ResFitter
     vector<double> theta;
     vector<struct Resonance> resData;
     Resonance resonance;
-    double params[4];
+    double params[4] = {-1.0,-1.0,-1.0,-1.0};
     FileData *file;
-
-    double lorentz(double x, double y0, double yc, double xc, double w);
-    double lorentz(double x, double *params);
 
     double lorentzDyc(double x, double xc, double w);
     double lorentzDyc(double x, double *params);
@@ -56,7 +54,7 @@ class ResFitter
 
     vector<double> eigenSolver(const std::vector<double>& coeffA);
     vector<double> eigenSolverMonic(const std::vector<double>& coefficients);
-    double randInt(int high);
+    int randInt();
 public:
     vector<struct Resonance> fittedData;
     /*ResFitter - method that perform fitting data with Lorentz peak function. The result of fitting writes in text files.
@@ -65,8 +63,9 @@ public:
      * step - the value in gradient descend method  y1 = y0 - step*grad
      * file - element of class, that contain the fitting data*/
     ResFitter(double maxSteps, double minError, FileData *file);
-
+    static double lorentz(double x, double *params);
     void fitData(stack <struct Resonance> &stack, const vector<double> &baseline);
+    static double lorentz(double x, double y0, double yc, double xc, double w);
 };
 
 #endif // RESFITTER_H

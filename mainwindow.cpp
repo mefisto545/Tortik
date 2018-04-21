@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MainWindow::setWindowTitle("ResFinder_v1.0.0");
+    MainWindow::setWindowTitle("ResFinder_v1.0.2");
     connect(ui->customPlot, &QCustomPlot::mousePress, this, &MainWindow::slotMousePress);
     QStringList List;
     List.push_back("Use straight baseline");
@@ -40,8 +40,10 @@ void MainWindow::showGraph(const vector<double> &vectorx, const vector<double> &
     ui->customPlot->addGraph();
     ui->customPlot->addGraph();
     ui->customPlot->addGraph();
+    // create graph for fit curve
+    ui->customPlot->addGraph();
     // create graphs that show found resonances
-    int resNum = 4, numOfRes = fittedData.size();
+    int resNum = 5, numOfRes = fittedData.size();
     for(int i = 0; i < numOfRes; i++)
     {
         Resonance resonance = fittedData[i];
@@ -263,6 +265,7 @@ void MainWindow::slotMousePress(QMouseEvent *event)
             QString widthStr = QString::number(width, 'g', 6);
             ui->lineEditRf->setText(xcStr);
             ui->lineEditW->setText(widthStr);
+            MainWindow::printFit(locRes);
         }
         else
         {
@@ -272,6 +275,33 @@ void MainWindow::slotMousePress(QMouseEvent *event)
     }
 }
 
+void MainWindow::printFit(Resonance res)
+{
+    QVector<double> x, y;
+    QVector<double> kek(0.0);
+    QVector<double> kek1(0.0);
+    ui->customPlot->graph(4)->setData(kek, kek1);
+    ui->customPlot->replot();
+    // cancel function after cleaning if special user doesn't need the fit curve
+    if (!(ui->checkBoxShowFitCurve->isChecked())) return;
+    ui->customPlot->graph(4)->setPen(QPen(Qt::black));
+    double localParams[4];
+    if (res.a == 0)
+    {
+        return;
+    }
+    localParams[0] = res.y0;
+    localParams[1] = res.yc;
+    localParams[2] = res.xc;
+    localParams[3] = res.width;
+    for(int i = res.xc - res.width*4.0; i < res.xc + res.width*4.0; i++)
+    {
+        x.append((double)i);
+        y.append(ResFitter::lorentz((double)i,localParams));
+    }
+    ui->customPlot->graph(4)->addData(x, y);
+    ui->customPlot->replot();
+}
 
 void MainWindow::on_pushButton_clicked()
 {
