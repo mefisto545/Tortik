@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MainWindow::setWindowTitle("ResFinder_v1.0.2");
+    MainWindow::setWindowTitle("ResFinder_v1.0.2.1");
     connect(ui->customPlot, &QCustomPlot::mousePress, this, &MainWindow::slotMousePress);
     QStringList List;
     List.push_back("Use straight baseline");

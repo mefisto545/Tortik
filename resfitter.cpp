@@ -244,6 +244,7 @@ void ResFitter::findInitialParams(double y0)
         if (abs(theta[i]-y0) < 0.5 * depth)
         {
             right =freq[i] + (freq[i] - freq[i-1])*((y0+theta[min])/2.0 - theta[i])/(theta[i] - theta[i-1]);
+            right = right - freq[min];
             break;
         }
     }
@@ -252,6 +253,7 @@ void ResFitter::findInitialParams(double y0)
         if (abs(theta[i]-y0) < 0.5 * depth)
         {
             left = freq[i] + (freq[i] - freq[i-1])*((y0+theta[min])/2.0 - theta[i])/(theta[i] - theta[i-1]);
+            left = freq[min] - left;
             break;
         }
     }
@@ -261,12 +263,12 @@ void ResFitter::findInitialParams(double y0)
     params[2]= freq[min];
     if (left > 0.0)
     {
-        if (right > 0.0) params[3] = right - left;
-        else params[3] = (freq[min] - left) * 2.0;
+        if (right > 0.0) params[3] = right + left;
+        else params[3] = left * 2.0;
     }
     else if (right > 0.0)
     {
-        params[3] = (right - freq[min]) * 2.0;
+        params[3] = right * 2.0;
     }
     else
         params[3] = (freq.back() - freq[0]) / 2.0;
