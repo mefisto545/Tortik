@@ -14,7 +14,7 @@ inline double median(double f,double k, double y0)
 // *y0 = output intercept
 // *k  = output slope
 
-void level(vector <double> &x, vector <double> &y, double* k, double* y0, double trigg)
+bool level(vector <double> &x, vector <double> &y, double* k, double* y0, double trigg)
 {
     double   sumx = 0.0;                      /* sum of x     */
     double   sumx2 = 0.0;                     /* sum of x**2  */
@@ -51,8 +51,8 @@ void level(vector <double> &x, vector <double> &y, double* k, double* y0, double
         size = N;
     }
     double denom = (size * sumx2 - sumx * sumx);
-    if (denom == 0)
-        abort();
+    if (denom == 0) return false;
     *k = (size * sumxy  -  sumx * sumy) / denom;
     *y0 = (sumy * sumx2  -  sumx * sumxy) / denom;
+    return true;
 }

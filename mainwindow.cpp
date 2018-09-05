@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MainWindow::setWindowTitle("ResFinder_v1.0.2.1");
+    MainWindow::setWindowTitle("ResFinder_v1.0.2.3");
     connect(ui->customPlot, &QCustomPlot::mousePress, this, &MainWindow::slotMousePress);
     QStringList List;
     List.push_back("Use straight baseline");
@@ -161,7 +161,11 @@ void MainWindow::on_pushButtonRun_clicked()
         else
         {
             for (int i=0;  i < file->cycleNum; i++)
-                level(file->freqData, file->phaseData, &k, &y0, file->trigg);
+                if (!level(file->freqData, file->phaseData, &k, &y0, file->trigg))
+                {
+                    QMessageBox::about(this, "Error", "\tBaseline didn't converged.\nPlease, use bigger trigger value or curve baseline");
+                    break;
+                }
             ui->lineEditSlope->setText(QString::number(k));
             ui->lineEditInter->setText(QString::number(y0));
         }
@@ -253,18 +257,21 @@ Resonance resFreq(double f, stack <Resonance> st, vector <double> &x)
 void MainWindow::slotMousePress(QMouseEvent *event)
 {
     double coordX = ui->customPlot->xAxis->pixelToCoord(event->pos().x());
-    double xc = 0, width = 0;
+    double xc = 0, width = 0, height = 0;
     Resonance locRes = resFreq(coordX, st, file->freqData);
     xc = locRes.xc;
     width = locRes.width;
+    height = locRes.y0-locRes.yc;
     if(!st.empty())
     {
         if(xc >= 0)
         {
             QString xcStr = QString::number(xc,'g', 10);
             QString widthStr = QString::number(width, 'g', 6);
+            QString heightStr = QString::number(height, 'g', 6);
             ui->lineEditRf->setText(xcStr);
             ui->lineEditW->setText(widthStr);
+            ui->lineEditHeight->setText(heightStr);
             MainWindow::printFit(locRes);
         }
         else
@@ -308,4 +315,29 @@ void MainWindow::on_pushButton_clicked()
     string ExportFileName = ui->lineEditExport->text().toStdString();
     file->writeVectorToFile(ExportFileName, fitter->fittedData); // Write data of fitted resonances (with fit parameters) in txt file
     QMessageBox::about(this, "Done", "Saved");
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasUrls())
+    {
+        e->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *e)
+{
+    QStringList accepted_types;
+    accepted_types << "txt" << "dat";
+    foreach (const QUrl &url, e->mimeData()->urls())
+    {
+        QString fname = url.toLocalFile();
+        QFileInfo info(fname);
+        if(info.exists())
+        {
+            if(accepted_types.contains(info.suffix().trimmed(), Qt::CaseInsensitive));
+            ui->lineEditImport->setText(url.path().remove(0,1));
+            return;
+        }
+    }
 }

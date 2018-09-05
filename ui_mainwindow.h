@@ -82,6 +82,9 @@ public:
     QHBoxLayout *horizontalLayout_9;
     QLabel *label_9;
     QLineEdit *lineEditW;
+    QHBoxLayout *horizontalLayout_17;
+    QLabel *label_10;
+    QLineEdit *lineEditHeight;
     QCheckBox *checkBoxShowFitCurve;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox_3;
@@ -368,7 +371,7 @@ public:
         groupBox->setMaximumSize(QSize(16777215, 16777215));
         layoutWidget4 = new QWidget(groupBox);
         layoutWidget4->setObjectName(QStringLiteral("layoutWidget4"));
-        layoutWidget4->setGeometry(QRect(2, 20, 321, 89));
+        layoutWidget4->setGeometry(QRect(2, 20, 321, 116));
         verticalLayout = new QVBoxLayout(layoutWidget4);
         verticalLayout->setSpacing(5);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -409,6 +412,24 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_9);
+
+        horizontalLayout_17 = new QHBoxLayout();
+        horizontalLayout_17->setSpacing(0);
+        horizontalLayout_17->setObjectName(QStringLiteral("horizontalLayout_17"));
+        label_10 = new QLabel(layoutWidget4);
+        label_10->setObjectName(QStringLiteral("label_10"));
+
+        horizontalLayout_17->addWidget(label_10);
+
+        lineEditHeight = new QLineEdit(layoutWidget4);
+        lineEditHeight->setObjectName(QStringLiteral("lineEditHeight"));
+        lineEditHeight->setMinimumSize(QSize(192, 0));
+        lineEditHeight->setMaximumSize(QSize(192, 16777215));
+
+        horizontalLayout_17->addWidget(lineEditHeight);
+
+
+        verticalLayout->addLayout(horizontalLayout_17);
 
         checkBoxShowFitCurve = new QCheckBox(layoutWidget4);
         checkBoxShowFitCurve->setObjectName(QStringLiteral("checkBoxShowFitCurve"));
@@ -630,8 +651,9 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "Min. SNR", 0));
         lineEditSNR->setText(QApplication::translate("MainWindow", "10", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "Resonance properties", 0));
-        label_4->setText(QApplication::translate("MainWindow", "Resonance frequency", 0));
-        label_9->setText(QApplication::translate("MainWindow", "Resonance width", 0));
+        label_4->setText(QApplication::translate("MainWindow", "Central frequency", 0));
+        label_9->setText(QApplication::translate("MainWindow", "Width", 0));
+        label_10->setText(QApplication::translate("MainWindow", "Height", 0));
         checkBoxShowFitCurve->setText(QApplication::translate("MainWindow", "Show fit curve", 0));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Fit parameters", 0));
         checkBoxEnableFitParams->setText(QApplication::translate("MainWindow", "Use custom fit parameters", 0));

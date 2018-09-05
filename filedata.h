@@ -51,7 +51,7 @@ struct Resonance
     double snr;
     double mse;
 };
-void level(vector <double> &x, vector <double> &y, double* k, double* y0, double trigg);
+bool level(vector <double> &x, vector <double> &y, double* k, double* y0, double trigg);
 void trigger(vector <double> &x, vector <double> &y, vector <double> &baseline, double trigg, int w,
              bool SNRmatter, double minSNR, stack <struct Resonance> *Stack);
 double SNR(vector <double> &y, int a, int b, double median, double trigg, int w);
